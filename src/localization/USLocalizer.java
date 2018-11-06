@@ -1,6 +1,5 @@
-//package ca.mcgill.ecse211.Lab5;
-
-//import ca.mcgill.ecse211.Lab5.Odometer;
+package localization;
+import odometer.Odometer;
 import lejos.hardware.Sound;
 import lejos.hardware.ev3.LocalEV3;
 import lejos.hardware.lcd.LCD;
@@ -11,9 +10,9 @@ import lejos.hardware.motor.EV3LargeRegulatedMotor;
  * Performs heading localization using the ultrasonic sensor and the walls of the field.
  * 
  */
-public class USLocalizer implements UltrasonicController {
+public class USLocalizer {
 	public static int rotateSpeed = 50;
-	private  Odometer odometer;
+	private Odometer odometer;
 	private EV3LargeRegulatedMotor leftMotor, rightMotor;
 	final TextLCD display = LocalEV3.get().getTextLCD();
 	
@@ -26,6 +25,15 @@ public class USLocalizer implements UltrasonicController {
 	// variables
 	private int distance;
 	
+	  /**
+	   * This is the class constructor for a class that helps to localize our robot with an ultrasonic
+	   * sensor
+	   * 
+	   * @param leftMotor A EV3LargeRegularedMotor object instance that allows control of the left motor
+	   * @param rightMotor A EV3LargeRegularedMotor object instance that allows control of the right
+	   *        motor
+	   * @param odometer A odometer instance
+	   */
 	public USLocalizer(EV3LargeRegulatedMotor leftMotor, EV3LargeRegulatedMotor rightMotor, 
 			Odometer odometer) {
 		this.odometer = odometer;
@@ -33,10 +41,11 @@ public class USLocalizer implements UltrasonicController {
 		this.rightMotor = rightMotor;
 	}
 	
-	/**
-	 * Performs heading localization.
-	 */
 	
+	/**
+	 * This is the method to perform ultrasonic localization using falling edge when the robot's initial
+	 * is facing away from the wall
+	 */
 	public void fallingEdge() {
 		double alpha, beta = 0;
 		//set the speed and acceleration
@@ -91,6 +100,11 @@ public class USLocalizer implements UltrasonicController {
 		Sound.beep();
 	}
 
+	
+	/**
+	 * This is the method to perform ultrasonic localization using rising edge when the robot's initial
+	 * is facing towards the wall
+	 */
 	public void risingEdge() {
 		double alpha, beta = 0;
 		//set the speed and acceleration
@@ -145,7 +159,12 @@ public class USLocalizer implements UltrasonicController {
 		Sound.beep();
 	}
 	
-	
+	/**
+	 * This method is to localize the robot according to the angles get from the odometer when the two falling edge/
+	 * rising edge is detected and it calculated the angle the robot needs to turn to. 
+	 * @param angle1
+	 * @param angle2
+	 */
 	public void localiseAngle(double angle1, double angle2) {
 		double deltaTh = 0;
 		double[] odometer = { 0, 0, 0 };
@@ -171,32 +190,6 @@ public class USLocalizer implements UltrasonicController {
 	
 	
 	/**
-	 * Filters out invalid ultrasonic (US) samples, prints US reading to screen.
-	 * 
-	 * @param distance - the reading of the ultrasonic sensor.
-	 */
-	@Override
-    public void processUSData (int distance) {
-		// rudimentary filter - toss out invalid samples corresponding to null signal 
-	    if (distance >= 255 && filterControl < FILTER_OUT) {
-	      // bad value: do not set the distance var, do increment the filter value
-	      this.filterControl++;
-	    } else if (distance >= 255) {
-	      // We have repeated large values, so there must actually be nothing
-	      // there: leave the distance alone
-	      this.distance = distance;
-	    } else {
-	      // distance went below 255: reset filter and leave
-	      // distance alone.
-	      this.filterControl = 0;
-	      this.distance = distance;
-	    }
-	    
-	    display.drawString("                    ", 0, 6);
-	    display.drawString("US: " + this.distance, 0, 6);
-	}
-	
-	/**
 	 * Turns robot the specified amount.
 	 * 
 	 * @param theta - number of radians to turn. theta > 0 => clockwise, theta < 0 => counterclockwise
@@ -216,13 +209,6 @@ public class USLocalizer implements UltrasonicController {
 		this.rightMotor.stop();
 	}
 	
-	/**
-	 * @return ultrasonic sensor reading
-	 */
-	@Override
-	public int readUSDistance() {
-	  return this.distance;
-	}
 	
 	/**
 	 * Converts travel distance to number of degrees of rotation of robot's wheel.
