@@ -1,19 +1,10 @@
-package ca.mcgill.ecse211.threads;
+package threads;
 
-import ca.mcgill.ecse211.odometer.OdometerExceptions;
+import odometer.OdometerExceptions;
 import lejos.robotics.SampleProvider;
 
-/**
- * This class implements the Light Sensor Poller for our robot
- * it runs pulls the sensor data every 50 miliseconds
- * @author Caspar Cedro
- * @author Percy Chen
- * @author Patrick Erath
- * @author Anssam Ghezala
- * @author Susan Matuszewski
- * @author Kamy Moussavi Kafi
- */
-public class LightPoller extends ThreadControl{
+
+public class LightPoller extends Thread{
   protected SampleProvider us[];
   protected SensorData cont;
   protected float[][] lgData;
@@ -47,7 +38,7 @@ public class LightPoller extends ThreadControl{
   /**
    * the run method to be performed in run method, collect light data
    */
-  protected void runMethod() {
+  public void run() {
     double l[] = new double[2];
     for(int i = 0; i < us.length; i++) {
       us[i].fetchSample(lgData[i], 0); // acquire data
