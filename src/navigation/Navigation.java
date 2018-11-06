@@ -1,239 +1,262 @@
-package ca.mcgill.ecse211.project;
-
-import ca.mcgill.ecse211.odometer.Odometer;
-import ca.mcgill.ecse211.odometer.OdometerExceptions;
-import ca.mcgill.ecse211.threads.SensorData;
+//package ca.mcgill.ecse211.lab4;
+import lejos.hardware.Button;
 import lejos.hardware.Sound;
+import lejos.hardware.ev3.LocalEV3;
+import lejos.hardware.lcd.TextLCD;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
+import lejos.hardware.motor.EV3MediumRegulatedMotor;
+import lejos.hardware.port.Port;
+import lejos.hardware.sensor.EV3UltrasonicSensor;
+import lejos.hardware.sensor.SensorModes;
+import lejos.robotics.SampleProvider;
 
-/**
- * The Navigator class extends the functionality of the Navigation class. It offers an alternative
- * travelTo() method which uses a state machine to implement obstacle avoidance.
- * 
- * The Navigator class does not override any of the methods in Navigation. All methods with the same
- * name are overloaded i.e. the Navigator version takes different parameters than the Navigation
- * version.
- * 
- * This is useful if, for instance, you want to force travel without obstacle detection over small
- * distances. One place where you might want to do this is in the ObstacleAvoidance class. Another
- * place is methods that implement specific features for future milestones such as retrieving an
- * object.
- * 
- * @author Caspar Cedro
- * @author Percy Chen
- * @author Patrick Erath
- * @author Anssam Ghezala
- * @author Susan Matuszewski
- * @author Kamy Moussavi Kafi
- */
-public class Navigation {
-  private static final int FORWARD_SPEED = 120;
-  private static final int ROTATE_SPEED = 80;
-  private static final int ACCELERATION = 300;
+public class Navigation implements UltrasonicController {
+	
+	private static ColorDetector colorDetector;
+	private static Odometer odometer;
+	public static int distance;
+	private static EV3LargeRegulatedMotor leftMotor;
+	private static EV3LargeRegulatedMotor rightMotor;
+	private Object lock;
+	
+	private static final int FORWARD_SPEED = 150;
+	private static final int LOW_SPEED = 50;
+	private static final int ROTATE_SPEED = 100;
+	
+	public static double[][] points;
+	
+	private static double prevAngle = 0;
+	
+	public static int iterator = 0;
+	
+	private int filterControl = 0;
+	private static final int FILTER_OUT = 40;
+	
+	final TextLCD display = LocalEV3.get().getTextLCD();
+	
+	public static boolean foundTargetedRing = false;
+	
+	private static boolean reachedTargetPoint = false;
 
-  private EV3LargeRegulatedMotor leftMotor;
-  private EV3LargeRegulatedMotor rightMotor;
-  private Odometer odometer;
-  private SensorData data;
+	// Define motor specifications for the navigation object
+	public Navigation(Odometer odometer, EV3LargeRegulatedMotor leftMotor, EV3LargeRegulatedMotor rightMotor, ColorDetector colorDetector ) {
+		this.odometer = odometer;
+		this.leftMotor = leftMotor;
+		this.rightMotor = rightMotor;
+		this.colorDetector = colorDetector;
+		this.lock = new Object();
+	}
+	
+	//This method causes the robot to travel to the absolute field location (x, y), specified in tile points
+	public static void travelTo(double x, double y) {
+		double dFromX, dFromY, theta, resizeX, resizeY;
+		
+		//isNavigating = true; // set navigating to true
+		resizeX = Lab5.TILE_SIZE * x; // scale the X value from the target tile x value into cm
+		resizeY = Lab5.TILE_SIZE * y; // scale the Y value from the target tile y value into cm
 
-  /**
-   * This navigation class constructor sets up our robot to begin navigating a particular map
-   * 
-   * @param leftMotor The EV3LargeRegulatedMotor instance for our left motor
-   * @param rightMotor The EV3LargeRegulatedMotor instance for our right motor
-   */
-  public Navigation(EV3LargeRegulatedMotor leftMotor, EV3LargeRegulatedMotor rightMotor)
-      throws OdometerExceptions {
-    this.odometer = Odometer.getOdometer();
-    this.leftMotor = leftMotor;
-    this.rightMotor = rightMotor;
-    this.data = SensorData.getSensorData();
-    for (EV3LargeRegulatedMotor motor : new EV3LargeRegulatedMotor[] {this.leftMotor,
-        this.rightMotor}) {
-      motor.stop();
-      motor.setAcceleration(ACCELERATION);
-    }
-  }
+		double[] odometerData = odometer.getXYT();
 
-  /**
-   * This method travel the robot to desired position by following the line (Always
-   * rotate 90 degree), along with a correction
-   * 
-   * When avoid=true, the nav thread will handle traveling. If you want to travel without avoidance,
-   * this is also possible. In this case, the method in the Navigation class is used.
-   * 
-   * @param x The x coordinate to travel to (in cm)
-   * @param y The y coordinate to travel to (in cm)
-   * @param avoid: the robot will pay attention to the distance from ultrasonic sensor to avoid
-   *        abstacle when navigating
-   */
-  public void travelTo(int x, int y, boolean avoid) {
-    double dX = x - odometer.getXYT()[0];
-    double dY = y - odometer.getXYT()[1];
-    // double theta = Math.atan(dX / dY);
-    // if (dY < 0 && theta < Math.PI)
-    // theta += Math.PI;
+		dFromX = resizeX - odometerData[0]; // distance from targeted x coordinate to the current x coordinate
 
-    // Euclidean distance calculation.
-    // double distance = Math.sqrt(Math.pow(dX, 2) + Math.pow(dY, 2));
-    double theta = 0;
-    if (dX > 0.1) {
-      turnTo(90);
-      theta = 90;
-    } else if (dX < -0.1) {
-      turnTo(-90);
-      theta = -90;
-    }
-    moveWithCorrection(dX, theta);
-    odometer.setX(x);
-    
-    if (dY > 0.1) {
-      turnTo(0);
-      theta = 0;
-    } else if (dY < -0.1) {
-      turnTo(180);
-      theta = 180;
-    }
-    moveWithCorrection(dY, theta);
-    odometer.setY(y);
-  }
+		dFromY = resizeY - odometerData[1]; // distance from targeted y coordinate to the current y coordinate
 
-  /**
-   * Move a certain distance with correction (using coordinate system)
-   * @param distance: distance to cover
-   * @param theta: theta to be corrected each time
-   */
-  public synchronized void moveWithCorrection(double distance, double theta) {
-    leftMotor.setSpeed(FORWARD_SPEED);
-    rightMotor.setSpeed(FORWARD_SPEED);
+		theta = Math.atan2(dFromX, dFromY); // theta returned in radians
 
-    //correct error of the distance
-    int tiles = Math.abs((int)Math.round(distance));
-    for (int i = 0; i < tiles; i++) {
-      moveOneTileWithCorrection(theta);
-    }
-  }
+		if (theta < 0) {
+			theta = 2 * Math.PI + theta; // we want to keep the radians as positive values for simplicity
+		}
+		
+		turnTo(theta); // make robot turn to the required angle
 
-  private void moveOneTileWithCorrection(double theta) {
-    leftMotor.forward();
-    rightMotor.forward();
-    while (leftMotor.isMoving() || rightMotor.isMoving()) {
-      double left = data.getL()[0];
-      double right = data.getL()[1];
-      if (left < -5) {
-        leftMotor.stop(true);
-      }
+		double dFromTarget = Math.hypot(Math.abs(dFromX), Math.abs(dFromY)); // find how far the robot is from its
+																				// target
+		leftMotor.setSpeed(FORWARD_SPEED);
+		rightMotor.setSpeed(FORWARD_SPEED);
+		leftMotor.rotate(convertDistance(Lab5.wheelRadius, dFromTarget+5), true);
+		rightMotor.rotate(convertDistance(Lab5.wheelRadius, dFromTarget+5), true);
 
-      if (right < -5) {
-        rightMotor.stop(true);
-      }
-    }
-    odometer.setTheta(theta);
-    leftMotor.rotate(convertDistance(Game.WHEEL_RAD, Game.SEN_DIS), true);
-    rightMotor.rotate(convertDistance(Game.WHEEL_RAD, Game.SEN_DIS), false);
-  }
+		
+		while(isNavigating()) {
+			if(distance<= 10) {	//the robot is too close to the wall 
 
-  /**
-   * (*Improve* *Consider to discard*) This method is where the logic for the odometer will run. Use
-   * the methods provided from the OdometerData class to implement the odometer.
-   * 
-   * @param angle The angle we want our robot to turn to (in degrees)
-   * @param async whether return instantaneously
-   */
-  public synchronized void turnTo(double angle) {
-    double dTheta;
+				leftMotor.setSpeed(LOW_SPEED);
+				rightMotor.setSpeed(LOW_SPEED);
+				
+				//colorDetector.performColorDetection();
+				
+				leftMotor.rotate(convertDistance(Lab5.wheelRadius, 4), true);	//travel a certain distance
+				rightMotor.rotate(convertDistance(Lab5.wheelRadius, 4), false); //travel a certain distance
+				
+				leftMotor.rotate(convertDistance(Lab5.wheelRadius, -1), true);	//travel a certain distance
+				rightMotor.rotate(convertDistance(Lab5.wheelRadius, -1), false); //travel a certain distance
+				
+				colorDetector.performColorDetection();
+				
+				leftMotor.rotate(convertAngle(Lab5.wheelRadius, Lab5.axleWidth, 90), true);  //turn 90 degree right when facing obstacle
+				rightMotor.rotate(-convertAngle(Lab5.wheelRadius, Lab5.axleWidth, 90), false);
+				
+				leftMotor.setSpeed(FORWARD_SPEED);
+				rightMotor.setSpeed(FORWARD_SPEED);
+					
+				leftMotor.rotate(convertDistance(Lab5.wheelRadius, 15), true);	//travel a certain distance
+				rightMotor.rotate(convertDistance(Lab5.wheelRadius, 15), false); //travel a certain distance
+				
+				leftMotor.rotate(-convertAngle(Lab5.wheelRadius, Lab5.axleWidth, 90), true);  //turn 90 degree right when facing obstacle
+				rightMotor.rotate(convertAngle(Lab5.wheelRadius, Lab5.axleWidth, 90), false);
+				
+				leftMotor.rotate(convertDistance(Lab5.wheelRadius, 37), true);	//travel a certain distance
+				rightMotor.rotate(convertDistance(Lab5.wheelRadius, 37), false); //travel a certain distance
+				
+				leftMotor.rotate(-convertAngle(Lab5.wheelRadius, Lab5.axleWidth, 90), true);  //turn 90 degree right when facing obstacle
+				rightMotor.rotate(convertAngle(Lab5.wheelRadius, Lab5.axleWidth, 90), false);
+				
+				leftMotor.rotate(convertDistance(Lab5.wheelRadius, 15), true);	//travel a certain distance
+				rightMotor.rotate(convertDistance(Lab5.wheelRadius, 15), false); //travel a certain distance
+				
+				leftMotor.rotate(convertAngle(Lab5.wheelRadius, Lab5.axleWidth, 90), true);  //turn 90 degree right when facing obstacle
+				rightMotor.rotate(-convertAngle(Lab5.wheelRadius, Lab5.axleWidth, 90), false);
+				
+				iterator--;	
+				if(foundTargetedRing) {
+					reachedTargetPoint = false;
+				}	
+			} else {
+				reachedTargetPoint = true;
+			}
+			
+		}
+	}
+	
+	//This method causes the robot to turn (on point) to the absolute heading theta
+	public static void turnTo(double theta) {
+		//isNavigating = true; // set navigation to true
+		double[] odometerData = odometer.getXYT(); // get data from odometer
+		double delTheta = odometerData[2]; // get the theta value of odometer
+		double turningAngle = theta - delTheta; // calculate the absolute turning angle based on the measured theta
+												// based on coordinates and the current theta value of the robot
+		if (turningAngle < 0) { // again, if the turning angle is negative, we want it to obtain its positive
+								// equivalent
+			turningAngle = 2 * (Math.PI) - Math.abs(turningAngle);
+		}
+		leftMotor.setSpeed(ROTATE_SPEED);
+		rightMotor.setSpeed(ROTATE_SPEED);
+		if (turningAngle > Math.PI) { // turn left if the turning angle ranges from (181-360) degrees to perform					// smallest turn
+			turningAngle = (2 * Math.PI) - turningAngle;
+			leftMotor.rotate(-convertAngle(Lab5.wheelRadius, Lab5.axleWidth, Math.toDegrees(turningAngle)), true);
+			rightMotor.rotate(convertAngle(Lab5.wheelRadius, Lab5.axleWidth, Math.toDegrees(turningAngle)), false);
+		} else { // turn right if the turning angle ranges from (0-180) degrees to perform
+					// smallest turn
+			leftMotor.rotate(convertAngle(Lab5.wheelRadius, Lab5.axleWidth, Math.toDegrees(turningAngle)), true); // convert
+																											// turning
+																											// angle
+																											// into
+																											// degrees
+			rightMotor.rotate(-convertAngle(Lab5.wheelRadius, Lab5.axleWidth, Math.toDegrees(turningAngle)), false); // convert
+																											// turnin																							// angle
+		}
+	}
+	
+	public void run() {
+		leftMotor.stop();
+		rightMotor.stop();
+		
+		leftMotor.setAcceleration(300);
+		rightMotor.setAcceleration(300);
+		
+		points = setUpSearchMap(Lab5.waypoints[0][0], Lab5.waypoints[0][1], Lab5.waypoints[1][0], Lab5.waypoints[1][1]);
+		
+		try {
+			Thread.sleep(1500);
+		} catch (Exception e) {
+			//do nothing
+		}
+		travelTo(Lab5.waypoints[0][0], Lab5.waypoints[0][1]);		//travel to (LLx, LLy) from (1,1)
+		// start search the map for target ring until the targeted ring is found
+		while(iterator < points.length && !foundTargetedRing) {
+			if(foundTargetedRing) {
+				break;
+			}
+			travelTo(points[iterator][0], points[iterator][1]);
+			iterator++;
+		}
+		while(!reachedTargetPoint) {
+			travelTo(Lab5.waypoints[1][0], Lab5.waypoints[1][1]);
+		}
+	}
 
-    dTheta = angle - odometer.getXYT()[2];
-    if (dTheta < 0)
-      dTheta += 360;
+	//This method returns true if another thread has called travelTo() or turnTo() and the method has yet to return; false otherwise
+	//static boolean navigating = false;
 
-    // TURN RIGHT
-    if (dTheta > 180) {
-      leftMotor.setSpeed(ROTATE_SPEED);
-      rightMotor.setSpeed(ROTATE_SPEED);
-      leftMotor.rotate(-convertAngle(Game.WHEEL_RAD, Game.TRACK, 360 - dTheta), true);
-      rightMotor.rotate(convertAngle(Game.WHEEL_RAD, Game.TRACK, 360 - dTheta), false);
-    }
-    // TURN LEFT
-    else {
-      leftMotor.setSpeed(ROTATE_SPEED);
-      rightMotor.setSpeed(ROTATE_SPEED);
-      leftMotor.rotate(convertAngle(Game.WHEEL_RAD, Game.TRACK, dTheta), true);
-      rightMotor.rotate(-convertAngle(Game.WHEEL_RAD, Game.TRACK, dTheta), false);
-    }
-  }
-  
-  /**
-   * found the tunnel based on the ll and ur coordinate, after the method, the robot will go the 
-   * the entrance of the tunnel facing the tunnel
-   * @param ll: lower left corner coordinate
-   * @param ur: upper right corner coordinate
-   */
-  public void findTunnel(int[] ll, int[] ur) {
-    
-  }
-  
-  /**
-   * the method for go through the tunnel (call find tunnel before calling this method)
-   */
-  public void goThroughTunnel() {
-    
-  }
-  
-  /**
-   * this method navigate the robot to the ring set, find the right position of the ring set 
-   */
-  public void goToRingSet() {
-    
-  }
-  
-  /**
-   * this method approaches the ring set by paying attention to the reading of us sensor, stops
-   * at the place when the robot can reach the ring
-   */
-  public void approachRingSet() {
-    
-  }
+	private static boolean isNavigating() {
+		if((leftMotor.isMoving() || rightMotor.isMoving()))
+			return true;
+		else 
+			return false;
+	}
 
-  /**
-   * Rotate the robot by certain angle
-   * 
-   * @param angle The angle to rotate our robot to
-   */
-  public void turn(int angle) {
-    leftMotor.rotate(convertAngle(Game.WHEEL_RAD, Game.TRACK, angle), true);
-    rightMotor.rotate(-convertAngle(Game.WHEEL_RAD, Game.TRACK, angle), false);
-  }
+	/**
+	 * This method allows the conversion of a distance to the total rotation of each
+	 * wheel need to cover that distance.
+	 * 
+	 * @param radius
+	 * @param distance
+	 * @return
+	 */
+	public static int convertDistance(double radius, double distance) {
+		return (int) ((180.0 * distance) / (Math.PI * radius));
+	}
 
-  /**
-   * Stop the motor
-   */
-  public void stop() {
-    leftMotor.stop(true);
-    rightMotor.stop(false);
-  }
+	private static int convertAngle(double radius, double width, double angle) {
+		return convertDistance(radius, Math.PI * width * angle / 360.0);
+	}
+	
+	  public static double[][] setUpSearchMap(int LLx, int LLy, int URx, int URy ) {
+	      int size = (URx - LLx + 1) * 2 -1;
+	      double[][] map = new double[size][2];
+	      map[size-1][0] = URx;
+	      map[size-1][1] = URy;
+	      for (int i=0,j=0,k=1; i<size && i+1<size; i+=2){
+	          map[i][0] = (LLx+j);
+	          j++;
+	          map[i+1][0] = (LLx + j);
+	          if(k%2 == 0) {
+	              map[i][1] = LLy;
+	              map[i+1][1] = LLy;
+	          } else {
+	              map[i][1] = URy;
+	              map[i+1][1] = URy;
+	          }
+	          k++;
+	      }
+	      return map;
+	  }
 
-  /**
-   * This method allows the conversion of a distance to the total rotation of each wheel need to
-   * cover that distance.
-   * 
-   * @param radius The radius of our wheels
-   * @param distance The distance traveled
-   * @return A converted distance
-   */
-  public static int convertDistance(double radius, double distance) {
-    return (int) ((180.0 * distance) / (Math.PI * radius));
-  }
+	@Override
+	public void processUSData(int distance) {
+		// rudimentary filter - toss out invalid samples corresponding to null signal 
+	    if (distance >= 255 && filterControl < FILTER_OUT) {
+	      // bad value: do not set the distance var, do increment the filter value
+	      this.filterControl++;
+	    } else if (distance >= 255) {
+	      // We have repeated large values, so there must actually be nothing
+	      // there: leave the distance alone
+	      this.distance = distance;
+	    } else {
+	      // distance went below 255: reset filter and leave
+	      // distance alone.
+	      this.filterControl = 0;
+	      this.distance = distance;
+	    }
+	    display.drawString("                    ", 0, 6);
+	    display.drawString("US: " + this.distance, 0, 6);
+	}
 
-  /**
-   * This method allows the conversion of an angle value
-   * 
-   * @param radius The radius of our wheels
-   * @param distance The distance traveled
-   * @param angle The angle to convert
-   * @return A converted angle
-   */
-  private static int convertAngle(double radius, double width, double angle) {
-    return convertDistance(radius, Math.PI * width * angle / 360.0);
-  }
+	@Override
+	public int readUSDistance() {
+		// TODO Auto-generated method stub
+		return this.distance;
+	}
 }
+
+	
