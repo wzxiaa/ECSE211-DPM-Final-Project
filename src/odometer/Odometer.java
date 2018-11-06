@@ -1,9 +1,17 @@
-//package ca.mcgill.ecse211.lab4;
-
-
+package odometer;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 
+
+/**
+ * This class is a used to calculate the x, y position and the heading of the robot. 
+ * 
+ * @author Wenzong 
+ * @author Lucas
+ *
+ */
 public class Odometer extends Thread {
+
+	
   // robot position
   private double x;
   private double y;
@@ -16,8 +24,8 @@ public class Odometer extends Thread {
   public static int lastTachoR;			// Tacho R at last sample 
   public static int nowTachoL;			// Current tacho L
   public static int nowTachoR;			// Current tacho R
-  public static final double WR = Lab5.wheelRadius;
-  public static final double Width = Lab5.axleWidth;
+  //public static final double WR = Lab5.wheelRadius;
+  //public static final double Width = Lab5.axleWidth;
   private static final double twopi = 2*Math.PI;
   //change the WR and width to our own robot value
 
@@ -43,6 +51,8 @@ public class Odometer extends Thread {
 
   // run method (required for Thread)
   public void run() {
+	  /*
+	 
     long updateStart, updateEnd;
 
     while (true) {
@@ -60,13 +70,7 @@ public class Odometer extends Thread {
 		deltaT = (distL-distR)/Width;
 		dX = deltaD * Math.sin(theta);						// compute X component of displacement
 		dY = deltaD * Math.cos(theta);						// compute Y component of displacement
-      
-      synchronized (lock) {
-        /**
-         * Don't use the variables x, y, or theta anywhere but here! Only update the values of x, y,
-         * and theta in this block. Do not perform complex math
-         * 
-         */													// compute change in heading
+      											// compute change in heading
 		theta += deltaT;									// update heading
 		x += dX;											// update estimates of X and Y position
 		y += dY;
@@ -89,6 +93,7 @@ public class Odometer extends Thread {
         }
       }
     }
+    */
   }
 
   public void getPosition(double[] position, boolean[] update) {

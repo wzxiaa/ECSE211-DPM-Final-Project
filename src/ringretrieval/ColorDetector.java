@@ -1,4 +1,5 @@
-
+package ringretrieval;
+import odometer.Odometer;
 import lejos.hardware.Button;
 import lejos.hardware.Sound;
 import lejos.hardware.ev3.LocalEV3;
@@ -9,7 +10,17 @@ import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.hardware.sensor.SensorModes;
 import lejos.robotics.SampleProvider;
 
+
+/**
+ * The version of color detection in lab 5 uses the mean and standard deviation to differentiate between different colored rings. This class will be reused in n 
+ * early the same way, except the values may need to be recalculated according to the mechanical design selected from the three experimented with in the hardware 
+ * design document. The color sensor placement plays a large role in how this class will be changed. 
+ * @author Wenzong
+ * @author Lucas
+ *
+ */
 public class ColorDetector {
+	
 	
 	  private static final Port lightPort = LocalEV3.get().getPort("S3");
 	  private SensorModes lightSensor = new EV3ColorSensor(lightPort);
@@ -19,7 +30,7 @@ public class ColorDetector {
 
 	  double thetaX1, thetaX2, thetaY1, thetaY2;
 	  
-	  private Odometer odometer;
+	 // private Odometer odometer;
 	  
 	  private static Color currentColor;
 	  private static Color targetColor;
@@ -38,12 +49,15 @@ public class ColorDetector {
 	 
 	  //Navigation nav
 	  public ColorDetector(Odometer odo, Color inputColor) {
+		  /*
 		  this.odometer = odo;
 		  this.targetColor = inputColor;
 		  this.isDetected = false;
+		  */
 	  }
 	
 	  public void performColorDetection() {
+		  /*
 		  while (!isDetected){
 			ColorDisplay();
 		  }	
@@ -56,6 +70,7 @@ public class ColorDetector {
 			  lcd.drawString("Color: " + currentColor,0, 5);
 		  }
 		   isDetected = false;
+		   */
 	  }
 	  
 	  private void ColorDisplay() {

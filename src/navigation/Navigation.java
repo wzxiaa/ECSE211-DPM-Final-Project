@@ -1,7 +1,29 @@
 package navigation;
+import localization.LightLocalizer;
+import localization.USLocalizer;
+import odometer.Odometer;
+import lejos.hardware.Button;
+import lejos.hardware.ev3.LocalEV3;
+import lejos.hardware.lcd.TextLCD;
+import lejos.hardware.motor.EV3LargeRegulatedMotor;
+import lejos.hardware.motor.EV3MediumRegulatedMotor;
+import lejos.hardware.port.Port;
+import lejos.hardware.sensor.EV3ColorSensor;
+import lejos.hardware.sensor.EV3UltrasonicSensor;
+import lejos.hardware.sensor.SensorModes;
+import lejos.robotics.SampleProvider;
 
 
 public class Navigation extends Thread {
+	
+	/**
+	 * This is a class that perform the navigation of the robot to the tunnel and the tree.
+	 * @author Wenzong
+	 * @author Lucas
+	 */
+	
+	
+	private Odometer odo;
 
 	public Navigation(Odometer odometer, EV3LargeRegulatedMotor leftMotor, EV3LargeRegulatedMotor rightMotor) {
 
@@ -27,7 +49,8 @@ public class Navigation extends Thread {
 	// static boolean navigating = false;
 
 	private static boolean isNavigating() {
-
+		boolean isNavigating = true;
+		return isNavigating;
 	}
 
 	/**

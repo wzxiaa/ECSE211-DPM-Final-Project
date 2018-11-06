@@ -1,14 +1,6 @@
-package ca.mcgill.ecse211.project;
+package ringgame;
 
-import ca.mcgill.ecse211.localization.LightLocalizer;
-import ca.mcgill.ecse211.localization.UltrasonicLocalizer;
-import ca.mcgill.ecse211.odometer.Odometer;
-import ca.mcgill.ecse211.odometer.OdometerExceptions;
-import ca.mcgill.ecse211.threads.LightPoller;
-import ca.mcgill.ecse211.threads.RingSearcher;
-import ca.mcgill.ecse211.threads.SensorData;
-import ca.mcgill.ecse211.threads.ThreadControl;
-import ca.mcgill.ecse211.threads.UltrasonicPoller;
+
 import lejos.hardware.Button;
 import lejos.hardware.ev3.LocalEV3;
 import lejos.hardware.lcd.TextLCD;
@@ -22,13 +14,8 @@ import lejos.robotics.SampleProvider;
 
 /**
  * This singleton contains all the methods and structures necessary to start competing in a game
- * 
- * @author Caspar Cedro
- * @author Percy Chen
- * @author Patrick Erath
- * @author Anssam Ghezala
- * @author Susan Matuszewski
- * @author Kamy Moussavi Kafi
+ * @author Wenzong
+ * @author Lucas
  */
 public enum Game {
   INSTANCE;
@@ -240,25 +227,6 @@ public enum Game {
     status = newStatus;
   }
 
-  /**
-   * This variable stores a ThreadController instance that controls our RGB sensor
-   */
-  private static ThreadControl rgbPoller;
-
-  /**
-   * This variable stores a ThreadController instance that controls our light sensor
-   */
-  private static ThreadControl lightPoller;
-
-  /**
-   * This variable stores a ThreadController instance that controls our motors
-   */
-  private static ThreadControl motorControlThread;
-
-  /**
-   * This variable stores a ThreadController instance that controls our ultrasonic sensor
-   */
-  public static ThreadControl usPoller;
 
   /**
    * Motor object instance that allows control of the left motor connected to port A
@@ -310,12 +278,6 @@ public enum Game {
    */
   private static boolean hasReadData;
 
-  /**
-   * Read data from the WiFi class (using another thread)
-   */
-  public synchronized void readData() {
-    WiFi wifi = new WiFi();
-  }
 
   /**
    * This method localizes our robot to the starting position
@@ -373,7 +335,8 @@ public enum Game {
    * 
    * @throws OdometerExceptions
    */
-  public static void preparation() throws OdometerExceptions {
+  public static void preparation() {
+	  /*
     // Motor Objects, and Robot related parameters
     Port usPort = LocalEV3.get().getPort("S1");
     // initialize multiple light ports in main
@@ -432,6 +395,8 @@ public enum Game {
     // fLgPoller1.start();
     // Thread gPoller = new GyroPoller(gProvider, new float[gProvider.sampleSize()], sensorData);
     // gPoller.start();
+     * 
+     */
   }
 
   /**
@@ -439,7 +404,8 @@ public enum Game {
    * 
    * @throws OdometerExceptions
    */
-  public static void runGame() throws OdometerExceptions {
+  public static void runGame()  {
+	  /*
     final int buttonChoice = Button.waitForAnyPress(); // Record choice (left or right press)
     // Start localizing
     final Navigation navigation = new Navigation(leftMotor, rightMotor);
@@ -467,5 +433,6 @@ public enum Game {
         // navigate to start
       }
     }).start();
+    */
   }
 }

@@ -1,17 +1,11 @@
-package ca.mcgill.ecse211.threads;
+package threads;
 
-import ca.mcgill.ecse211.odometer.OdometerExceptions;
+import odometer.OdometerExceptions;
+import odometer.Odometer;
 import lejos.robotics.SampleProvider;
 
 /**
  * This class polls a light sensor that is used to detect colored rings.
- * 
- * @author Caspar Cedro
- * @author Percy Chen
- * @author Patrick Erath
- * @author Anssam Ghezala
- * @author Susan Matuszewski
- * @author Kamy Moussavi Kafi
  */
 public class RGBPoller extends LightPoller{
 
@@ -29,7 +23,7 @@ public class RGBPoller extends LightPoller{
     super(us, usData, cont);
   }
 
-  @Override
+
   protected void runMethod() {
     us[0].fetchSample(lgData[0], 0); // acquire data at offset 0
     // get RGB values from buffer, multiply by 100 for convenience and allow it to be cast to int

@@ -1,4 +1,4 @@
-//package ca.mcgill.ecse211.lab4;
+package threads;
 
 import lejos.robotics.SampleProvider;
 
@@ -8,15 +8,17 @@ import lejos.robotics.SampleProvider;
  * methods operate in about 20mS, and that the thread sleeps for 50 mS at the end of each loop, then
  * one cycle through the loop is approximately 70 mS. This corresponds to a sampling rate of 1/70mS
  * or about 14 Hz.
+ * @author Wenzong
+ * @author Lucas
  */
 public class UltrasonicPoller extends Thread {
   private SampleProvider us;
-  private UltrasonicController cont;
+  //private UltrasonicController cont;
   public float[] usData;
 
-  public UltrasonicPoller(SampleProvider us, float[] usData, UltrasonicController cont) {
+  public UltrasonicPoller(SampleProvider us, float[] usData) {
     this.us = us;
-    this.cont = cont;
+    //this.cont = cont;
     this.usData = usData;
   }
 
@@ -31,7 +33,7 @@ public class UltrasonicPoller extends Thread {
     while (true) {
       us.fetchSample(usData, 0); // acquire data
       distance = (int) (usData[0] * 100.0); // extract from buffer, cast to int
-      cont.processUSData(distance); // now take action depending on value
+      //cont.processUSData(distance); // now take action depending on value
       try {
         Thread.sleep(50);
       } catch (Exception e) {

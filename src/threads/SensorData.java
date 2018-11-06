@@ -1,18 +1,15 @@
-package ca.mcgill.ecse211.threads;
+package threads;
 
+
+import odometer.*;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-import ca.mcgill.ecse211.odometer.OdometerExceptions;
+
 
 /**
  * This class implements methods to manage data from our sensors
- * 
- * @author Caspar Cedro
- * @author Percy Chen
- * @author Patrick Erath
- * @author Anssam Ghezala
- * @author Susan Matuszewski
- * @author Kamy Moussavi Kafi
+ * @author Wenzong
+ * @author Lucas
  */
 public class SensorData {
   // Sensor data parameters

@@ -7,12 +7,15 @@ import lejos.hardware.port.Port;
 import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.hardware.sensor.SensorModes;
 import lejos.robotics.SampleProvider;
+import odometer.Odometer;
 import lejos.hardware.Button;
 import lejos.hardware.Sound;
 
 /**
  * Performs heading localization using the light sensor and the coordinate lines
  * on the field.
+ * @author Wenzong
+ * @author Lucas
  * 
  */
 
@@ -50,7 +53,7 @@ public class LightLocalizer {
 	 * This method helps us to perform the light localization to the starting position.
 	 */
 	public void doLoc() {
-
+		/*
 		int buttonChoice;
 		buttonChoice = Button.readButtons();
 		// set speed and acceleration
@@ -149,6 +152,7 @@ public class LightLocalizer {
 		if (buttonChoice == Button.ID_ESCAPE) {
 			System.exit(0);
 		}
+		*/
 	}
 
 	/** Converts travel distance to number of degrees of rotation of robot's

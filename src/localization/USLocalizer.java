@@ -8,7 +8,8 @@ import lejos.hardware.motor.EV3LargeRegulatedMotor;
 
 /**
  * Performs heading localization using the ultrasonic sensor and the walls of the field.
- * 
+ * @author Wenzong
+ * @author Lucas
  */
 public class USLocalizer {
 	public static int rotateSpeed = 50;
@@ -47,6 +48,7 @@ public class USLocalizer {
 	 * is facing away from the wall
 	 */
 	public void fallingEdge() {
+		/*
 		double alpha, beta = 0;
 		//set the speed and acceleration
 		this.leftMotor.setSpeed(rotateSpeed);
@@ -55,8 +57,8 @@ public class USLocalizer {
 		this.rightMotor.setAcceleration(500);
 		
 		// avoid finding falling edge too early
-		leftMotor.rotate(convertAngle(Lab5.wheelRadius, Lab5.axleWidth, 45), true);
-		rightMotor.rotate(-convertAngle(Lab5.wheelRadius, Lab5.axleWidth, 45), false);
+		leftMotor.rotate(convertAngle(GameParamter.wheelRadius, GameParameter.axleWidth, 45), true);
+		rightMotor.rotate(-convertAngle(GameParameter.wheelRadius, Lab5.axleWidth, 45), false);
 		
 		// rotate clockwise
 		this.leftMotor.forward();
@@ -98,6 +100,7 @@ public class USLocalizer {
 		this.odometer.setTheta(0);
 		this.localiseAngle(alpha, beta);
 		Sound.beep();
+		*/
 	}
 
 	
@@ -106,6 +109,7 @@ public class USLocalizer {
 	 * is facing towards the wall
 	 */
 	public void risingEdge() {
+		/*
 		double alpha, beta = 0;
 		//set the speed and acceleration
 		this.leftMotor.setSpeed(rotateSpeed);
@@ -157,6 +161,7 @@ public class USLocalizer {
 		this.localiseAngle(alpha, beta);
 		this.odometer.setTheta(0);
 		Sound.beep();
+		*/
 	}
 	
 	/**
@@ -166,6 +171,7 @@ public class USLocalizer {
 	 * @param angle2
 	 */
 	public void localiseAngle(double angle1, double angle2) {
+		/*
 		double deltaTh = 0;
 		double[] odometer = { 0, 0, 0 };
 
@@ -186,6 +192,7 @@ public class USLocalizer {
 		this.rightMotor.rotate(-convertAngle(Lab5.wheelRadius, Lab5.axleWidth, deltaTh), false);
 
 		display.drawString("deltaTheta: " + deltaTh, 0, 6);
+		*/
 	}
 	
 	
@@ -194,7 +201,8 @@ public class USLocalizer {
 	 * 
 	 * @param theta - number of radians to turn. theta > 0 => clockwise, theta < 0 => counterclockwise
 	 */
-	public void turnTo(double theta) {			
+	public void turnTo(double theta) {		
+		/*
 		//convert to degrees
 		theta = Math.toDegrees(theta);
 		
@@ -207,6 +215,7 @@ public class USLocalizer {
 		
 		this.leftMotor.stop();
 		this.rightMotor.stop();
+		*/
 	}
 	
 	

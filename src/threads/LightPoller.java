@@ -4,6 +4,12 @@ import odometer.OdometerExceptions;
 import lejos.robotics.SampleProvider;
 
 
+/**
+ * This class is used to poll the data from the lightsensors.
+ * @author Wenzong
+ * @author Lucas
+ *
+ */
 public class LightPoller extends Thread{
   protected SampleProvider us[];
   protected SensorData cont;
@@ -30,7 +36,7 @@ public class LightPoller extends Thread{
     this.cont = cont;
     this.lgData = lgData;
     this.id = sensorNumber;
-    isStarted = true;
+    //isStarted = true;
     lastValue = new float[2];
     sensorNumber++;
   }

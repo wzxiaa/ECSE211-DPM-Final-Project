@@ -1,14 +1,9 @@
-package ca.mcgill.ecse211.project;
+package ringgame;
 
 /**
  * This singleton contains all the game parameters needed for the competition
- * 
- * @author Caspar Cedro
- * @author Percy Chen
- * @author Patrick Erath
- * @author Anssam Ghezala
- * @author Susan Matuszewski
- * @author Kamy Moussavi Kafi
+ * @author Wenzong
+ * @author Lucas
  */
 public enum GameParameters {
   INSTANCE;
