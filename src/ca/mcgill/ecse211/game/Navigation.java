@@ -265,6 +265,11 @@ public class Navigation {
 	public void goThroughTunnel(int[] ll, int[] ur) {
 		for (int i = 0; i < 4; i++) {
 			moveOneTileWithCorrection();
+			try {
+				Thread.sleep(500);
+			}catch(Exception e) {
+				
+			}
 			Sound.beep();
 		}
 		leftMotor.rotate(-convertDistance(Game.WHEEL_RAD, Game.SEN_DIS), true);
@@ -281,7 +286,16 @@ public class Navigation {
 	 * 
 	 */
 	public void selfLocalize(int[] ur) {
-
+		moveOneTileWithCorrection();
+		leftMotor.rotate(-convertDistance(Game.WHEEL_RAD, Game.SEN_DIS), true);
+		rightMotor.rotate(-convertDistance(Game.WHEEL_RAD, Game.SEN_DIS), false);
+		leftMotor.rotate(convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), true);
+		rightMotor.rotate(-convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), false);
+		moveOneTileWithCorrection();
+		leftMotor.rotate(-convertDistance(Game.WHEEL_RAD, Game.SEN_DIS), true);
+		rightMotor.rotate(-convertDistance(Game.WHEEL_RAD, Game.SEN_DIS), false);
+		leftMotor.rotate(-convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), true);
+		rightMotor.rotate(convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), false);
 	}
 	
 	
@@ -295,18 +309,35 @@ public class Navigation {
 		
 		if(Math.abs(currentX-TR[0]) < (0.2)) {
 			if(currentY > TR[1]) {
-				travelTo(TR[0], TR[1]+1);
+				travelTo(TR[0], TR[1]+2);
+				//turnTo(90);
+				
 			} else if (currentY < TR[1]) {
-				travelTo(TR[0], TR[1]-1);
+				travelTo(TR[0], TR[1]-2);
+				//turnTo(270);
 			}
 		} else if (currentX < TR[0] && Math.abs(currentX-TR[0]) > 0.9) {
-			travelTo(TR[0]-1, TR[1]);
+			travelTo(TR[0]-2, TR[1]);
+			turnTo(90);
+			selfCorrection();
+			moveOneTileWithCorrection();
+			moveOneTileWithCorrection();
+			
 		} else if (currentX > TR[0] && Math.abs(currentX-TR[0]) > 0.9) {
-			travelTo(TR[0]+1, TR[1]);
+			travelTo(TR[0]+2, TR[1]);
+			turnTo(270);
+			selfCorrection();
+			moveOneTileWithCorrection();
+			moveOneTileWithCorrection();
 		}
 		Sound.beepSequence();
 	}
 
+	
+	public void selfCorrection() {
+		
+	}
+	
 	/**
 	 * this method approaches the ring set by paying attention to the reading of us
 	 * sensor, stops at the place when the robot can reach the ring

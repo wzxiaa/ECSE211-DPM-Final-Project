@@ -62,7 +62,7 @@ public enum GameParameter {
 	 */
 	public static int[] TR = new int[2];
 	
-	public static int[] TG = { 2 , 6 };
+	public static int[] TG = { 2 , 7 };
 	
 	public static double startingHeading;
 

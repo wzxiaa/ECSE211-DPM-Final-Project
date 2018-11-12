@@ -179,17 +179,18 @@ public class RingGame {
 			public void run() {
 				//ringRetrieval.ringScanning();
 				
-				ringRetrieval.grabUpperRing();
 				
-				//usLoc.localize(buttonChoice);
-				//lgLoc.localize(GameParameter.SC);
+				usLoc.localize(buttonChoice);
+				lgLoc.localize(GameParameter.SC);
 				//navigation.travelTo(3,3);
 				
-				//navigation.goToTunnel(GameParameter.TNG_LL, GameParameter.TNG_RR, GameParameter.GreenCorner);
-				//navigation.goThroughTunnel(GameParameter.TNG_LL, GameParameter.TNG_RR);
-				//navigation.goToRingSet(GameParameter.TG);
-				//Sound.beepSequence();
+				navigation.goToTunnel(GameParameter.TNG_LL, GameParameter.TNG_RR, GameParameter.GreenCorner);
+				navigation.goThroughTunnel(GameParameter.TNG_LL, GameParameter.TNG_RR);
+				navigation.goToRingSet(GameParameter.TG);
+				Sound.beepSequence();
 				// navigation.travelTo(GameParameter.TNR_UR_RED[0],GameParameter.TNR_UR_RED[0]);
+				ringRetrieval.grabUpperRing();
+				ringRetrieval.grabLowerRing();
 			}
 		}).start();
 	}
