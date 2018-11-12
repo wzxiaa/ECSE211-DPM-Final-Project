@@ -20,12 +20,7 @@ public class RingRetrieval {
 		this.elbowMotor = elbowMotor;
 		this.foreArmMotor = foreArmMotor;
 	}
-	
-	public void ringScanning() {
-		elbowMotor.setSpeed(elbowMotorRotationSpeed);
-		elbowMotor.rotate(-180);
-		elbowMotor.rotate(180);
-	}
+
 	
 	public void grabUpperRing() {
 		foreArmMotor.setSpeed(foreArmSpeed);
