@@ -9,6 +9,8 @@ import ca.mcgill.ecse211.threads.UltrasonicPoller;
 import lejos.hardware.ev3.LocalEV3;
 import lejos.hardware.lcd.TextLCD;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
+import lejos.hardware.motor.EV3MediumRegulatedMotor;
+import lejos.hardware.motor.NXTRegulatedMotor;
 import lejos.hardware.port.Port;
 import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.hardware.sensor.EV3UltrasonicSensor;
@@ -23,13 +25,24 @@ public enum Game {
 	 * D
 	 */
 	public static final EV3LargeRegulatedMotor leftMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("C"));
-
+//c
 	/**
 	 * Motor object instance that allows control of the right motor connected to
 	 * port C
 	 */
 	public static final EV3LargeRegulatedMotor rightMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("D"));
-
+	
+	/**
+	 * 
+	 */
+	public static final NXTRegulatedMotor elbowMotor = new NXTRegulatedMotor(LocalEV3.get().getPort("B"));
+	
+	/**
+	 * 
+	 */
+	public static final EV3MediumRegulatedMotor foreArmMotor = new EV3MediumRegulatedMotor(LocalEV3.get().getPort("A"));;
+	
+//d
 	/**
 	 * This variable stores the length of a tile in cm
 	 */
@@ -50,7 +63,7 @@ public enum Game {
 	 * This variable stores the distance between the light sensor and center of the
 	 * robot in cm
 	 */
-	public static final double SEN_DIS = 9.7;
+	public static final double SEN_DIS = 9.9;
 
 
 }

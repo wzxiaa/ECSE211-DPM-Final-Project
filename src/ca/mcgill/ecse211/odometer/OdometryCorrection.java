@@ -19,7 +19,7 @@ public class OdometryCorrection implements Runnable {
   private static final double LINE_COLOR_THRESHOLD = 0.35;
   private static final double SENSOR_DIS = 15.5;
   private Odometer odometer;
-  private static final SensorModes myColor = new EV3ColorSensor(LocalEV3.get().getPort("S2"));
+  private static final SensorModes myColor = new EV3ColorSensor(LocalEV3.get().getPort("S1"));
   private static SampleProvider myColorSample = myColor.getMode("Red");
   private static float[] sampleColor = new float[myColor.sampleSize()];
 

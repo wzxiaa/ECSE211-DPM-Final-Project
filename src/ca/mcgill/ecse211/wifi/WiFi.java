@@ -38,7 +38,7 @@ import lejos.hardware.Button;
 public class WiFi {
 
 	// ** Set these as appropriate for your team and current situation **
-	private static final String SERVER_IP = "192.168.2.255";
+	private static final String SERVER_IP = "192.168.2.9";
 	private static final int TEAM_NUMBER = 14;
 
 	// Enable/disable printing of debug info from the WiFi class
@@ -133,11 +133,12 @@ public class WiFi {
 			int lowerLeftCornerGreenTunnelY = ((Long) data.get("TNG_LL_y")).intValue();
 			GameParameter.TNG_LL[1] = lowerLeftCornerGreenTunnelY;
 
+			/*
 			int greenRingSetX = ((Long) data.get("TG_x")).intValue();
 			GameParameter.TG[0] = greenRingSetX;
 			int greenRingSetY = ((Long) data.get("TG_y")).intValue();
 			GameParameter.TG[1] = greenRingSetY;
-
+*/
 			/*
 			 * GameParameter.RedTeam = ((Long) data.get("RedTeam")).intValue();
 			 * GameParameter.GreenTeam = ((Long) data.get("GreenTeam")).intValue();

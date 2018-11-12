@@ -115,10 +115,10 @@ public class Navigation {
 		while (leftMotor.isMoving() || rightMotor.isMoving()) {
 			double left = data.getL()[0];
 			double right = data.getL()[1];
-			if (left < -10) {
+			if (left < -5) {
 				leftMotor.stop(true);
 			}
-			if (right < -10) {
+			if (right < -5) {
 				rightMotor.stop(true);
 			}
 		}
@@ -131,10 +131,11 @@ public class Navigation {
 		while (leftMotor.isMoving() || rightMotor.isMoving()) {
 			double left = data.getL()[0];
 			double right = data.getL()[1];
-			if (left < -10) {
+			if (left < -5) {
 				leftMotor.stop(true);
 			}
-			if (right < -10) {
+			if (right < -5
+					) {
 				rightMotor.stop(true);
 			}
 		}
@@ -181,34 +182,80 @@ public class Navigation {
 	 */
 	public void goToTunnel(int[] ll, int[] ur, int SC) {
 		//find tunnel entrance
-		int[] temp = findTunnelEntrance(ll, ur);
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		travelTo(ll[0] - 1, ll[1]);
-		
-		leftMotor.rotate(-convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), true);
-		rightMotor.rotate(convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), false);
-
-		moveOneTileWithCorrection();
-
-		leftMotor.rotate(convertDistance(Game.WHEEL_RAD, 5.5), true);
-		rightMotor.rotate(convertDistance(Game.WHEEL_RAD, 5.5), false);
-
-		leftMotor.rotate(convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), true);
-		rightMotor.rotate(-convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), false);
-
-		Sound.beepSequence();
+		if(GameParameter.GreenCorner == 0) {
+			if(GameParameter.determineTunnelHeading(ll, ur) == GameParameter.TunnelHeading.NORTH) {
+				travelTo(ll[0],ll[1]-1);
+				moveOneTileWithCorrection();
+				leftMotor.rotate(convertDistance(Game.WHEEL_RAD, 5.5), true);
+				rightMotor.rotate(convertDistance(Game.WHEEL_RAD, 5.5), false);
+				leftMotor.rotate(convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), true);
+				rightMotor.rotate(-convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), false);
+			} else if(GameParameter.determineTunnelHeading(ll, ur) == GameParameter.TunnelHeading.EAST) {
+				travelTo(ll[0]-1,ll[1]);
+				leftMotor.rotate(-convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), true);
+				rightMotor.rotate(convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), false);
+				moveOneTileWithCorrection();
+				leftMotor.rotate(convertDistance(Game.WHEEL_RAD, 5.5), true);
+				rightMotor.rotate(convertDistance(Game.WHEEL_RAD, 5.5), false);
+				leftMotor.rotate(convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), true);
+				rightMotor.rotate(-convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), false);
+			}
+		} else if(GameParameter.GreenCorner == 1) {
+			if(GameParameter.determineTunnelHeading(ll, ur) == GameParameter.TunnelHeading.NORTH) {
+				Sound.beep();
+				travelTo(ur[0], ll[1]-1);
+				moveOneTileWithCorrection();
+				leftMotor.rotate(convertDistance(Game.WHEEL_RAD, 5.5), true);
+				rightMotor.rotate(convertDistance(Game.WHEEL_RAD, 5.5), false);
+				leftMotor.rotate(convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), true);
+				rightMotor.rotate(-convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), false);
+			} else if(GameParameter.determineTunnelHeading(ll, ur) == GameParameter.TunnelHeading.WEST) {
+				travelTo(ur[0]+1, ur[1]-1);
+				leftMotor.rotate(convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), true);
+				rightMotor.rotate(-convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), false);
+				moveOneTileWithCorrection();
+				leftMotor.rotate(convertDistance(Game.WHEEL_RAD, 5.5), true);
+				rightMotor.rotate(convertDistance(Game.WHEEL_RAD, 5.5), false);
+				leftMotor.rotate(-convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), true);
+				rightMotor.rotate(convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), false);
+			}
+		} else if(GameParameter.GreenCorner == 2) {
+			if(GameParameter.determineTunnelHeading(ll, ur) == GameParameter.TunnelHeading.SOUTH) {
+				travelTo(ur[0], ur[1]+1);
+				moveOneTileWithCorrection();
+				leftMotor.rotate(convertDistance(Game.WHEEL_RAD, 5.5), true);
+				rightMotor.rotate(convertDistance(Game.WHEEL_RAD, 5.5), false);
+				leftMotor.rotate(-convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), true);
+				rightMotor.rotate(convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), false);
+			} else if (GameParameter.determineTunnelHeading(ll, ur) == GameParameter.TunnelHeading.WEST) {
+				travelTo(ur[0]+1, ur[1]);
+				leftMotor.rotate(-convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), true);
+				rightMotor.rotate(convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), false);
+				moveOneTileWithCorrection();
+				leftMotor.rotate(convertDistance(Game.WHEEL_RAD, 5.5), true);
+				rightMotor.rotate(convertDistance(Game.WHEEL_RAD, 5.5), false);
+				leftMotor.rotate(convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), true);
+				rightMotor.rotate(-convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), false);		
+			}
+		} else if (GameParameter.GreenCorner == 3) {
+			if(GameParameter.determineTunnelHeading(ll, ur) == GameParameter.TunnelHeading.SOUTH) {
+				travelTo(ur[0]-1, ur[1]);
+				leftMotor.rotate(convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), true);
+				rightMotor.rotate(-convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), false);	
+				moveOneTileWithCorrection();
+				leftMotor.rotate(convertDistance(Game.WHEEL_RAD, 5.5), true);
+				rightMotor.rotate(convertDistance(Game.WHEEL_RAD, 5.5), false);
+				leftMotor.rotate(-convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), true);
+				rightMotor.rotate(convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), false);
+			} else if (GameParameter.determineTunnelHeading(ll,ur) == GameParameter.TunnelHeading.EAST){
+				travelTo(ll[0]-1, ll[1]+1);
+				moveOneTileWithCorrection();
+				leftMotor.rotate(convertDistance(Game.WHEEL_RAD, 5.5), true);
+				rightMotor.rotate(convertDistance(Game.WHEEL_RAD, 5.5), false);
+				leftMotor.rotate(-convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), true);
+				rightMotor.rotate(convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), false);
+			}
+		}
 	}
 
 	/**
@@ -216,20 +263,48 @@ public class Navigation {
 	 * method)
 	 */
 	public void goThroughTunnel(int[] ll, int[] ur) {
-		for (int i = 0; i < (ur[0] - ll[0] + 2); i++) {
+		for (int i = 0; i < 4; i++) {
 			moveOneTileWithCorrection();
 			Sound.beep();
 		}
 		leftMotor.rotate(-convertDistance(Game.WHEEL_RAD, Game.SEN_DIS), true);
 		rightMotor.rotate(-convertDistance(Game.WHEEL_RAD, Game.SEN_DIS), false);
+		//after passing through the tunnel, turn 90 degree to the right
+		leftMotor.rotate(convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), true);
+		rightMotor.rotate(-convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), false);	
+		moveOneTileWithCorrection();
+		leftMotor.rotate(-convertDistance(Game.WHEEL_RAD, Game.SEN_DIS), true);
+		rightMotor.rotate(-convertDistance(Game.WHEEL_RAD, Game.SEN_DIS), false);
 	}
+	
+	/**
+	 * 
+	 */
+	public void selfLocalize(int[] ur) {
 
+	}
+	
+	
 	/**
 	 * this method navigate the robot to the ring set, find the right position of
 	 * the ring set
 	 */
-	public void goToRingSet() {
-		// travelTo();
+	public void goToRingSet(int[] TR) {
+		double currentX = odometer.getXYT()[0];
+		double currentY = odometer.getXYT()[1];
+		
+		if(Math.abs(currentX-TR[0]) < (0.2)) {
+			if(currentY > TR[1]) {
+				travelTo(TR[0], TR[1]+1);
+			} else if (currentY < TR[1]) {
+				travelTo(TR[0], TR[1]-1);
+			}
+		} else if (currentX < TR[0] && Math.abs(currentX-TR[0]) > 0.9) {
+			travelTo(TR[0]-1, TR[1]);
+		} else if (currentX > TR[0] && Math.abs(currentX-TR[0]) > 0.9) {
+			travelTo(TR[0]+1, TR[1]);
+		}
+		Sound.beepSequence();
 	}
 
 	/**
@@ -237,7 +312,7 @@ public class Navigation {
 	 * sensor, stops at the place when the robot can reach the ring
 	 */
 	public void approachRingSet() {
-
+		
 	}
 
 	/**
@@ -273,93 +348,4 @@ public class Navigation {
 	private static int convertAngle(double radius, double width, double angle) {
 		return convertDistance(radius, Math.PI * width * angle / 360.0);
 	}
-
-	/**
-	 * 
-	 * @param TN_LL
-	 * @param TN_UR
-	 * @return
-	 */
-	public int[] findTunnelEntrance(int[] TN_LL, int[] TN_UR) {
-		// robot's current location
-		double x = odometer.getXYT()[0];
-		double y = odometer.getXYT()[1];
-
-		// compute distance from robot to TN_LL
-		double distanceToTN_LL = Math.pow((x - TN_LL[0]), 2) + Math.pow((y - TN_LL[1]), 2);
-		double distanceToTN_UR = Math.pow((x - TN_UR[0]), 2) + Math.pow((y - TN_UR[1]), 2);
-
-		if (distanceToTN_LL > distanceToTN_UR) {
-			return TN_UR;
-		} else {
-			return TN_LL;
-		}
-	}
-
-	public int[] findTunnelEntranceForHeading(int[] TN_LL, int[] TN_UR) {
-		// robot's current location
-		double x = odometer.getXYT()[0];
-		double y = odometer.getXYT()[1];
-
-		// compute distance from robot to TN_LL
-		double distanceToTN_LL = Math.pow((x - TN_LL[0]), 2) + Math.pow((y - TN_LL[1]), 2);
-		double distanceToTN_UR = Math.pow((x - TN_UR[0]), 2) + Math.pow((y - TN_UR[1]), 2);
-
-		if (distanceToTN_LL > distanceToTN_UR) {
-			return TN_LL;
-		} else {
-			return TN_UR;
-		}
-	}
-
-	/**
-	 * 
-	 */
-	public void headingCorrectionBeforeTunnel() {
-		double x = odometer.getXYT()[0];
-		double y = odometer.getXYT()[1];
-
-		int[] temp = findTunnelEntranceForHeading(GameParameter.TNG_LL, GameParameter.TNG_RR);
-
-		double xDiff = Math.abs(temp[0] - x);
-		double yDiff = Math.abs(temp[1] - y);
-
-		if (GameParameter.GreenCorner == 0) {
-			if (yDiff > 30) {
-				this.turnTo(0);
-			} else {
-				this.turnTo(90);
-			}
-		}
-
-		if (GameParameter.GreenCorner == 1) {
-			if (yDiff > 30) {
-				this.turnTo(0);
-			} else {
-				this.turnTo(270);
-			}
-		}
-
-		if (GameParameter.GreenCorner == 2) {
-			if (yDiff > 30) {
-				this.turnTo(180);
-			} else {
-				this.turnTo(270);
-			}
-		}
-
-		if (GameParameter.GreenCorner == 3) {
-			if (yDiff > 30) {
-				this.turnTo(180);
-			} else {
-				this.turnTo(90);
-			}
-		}
-
-	}
-	
-	
-	
-	
-
 }
