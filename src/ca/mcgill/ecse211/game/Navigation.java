@@ -298,6 +298,10 @@ public class Navigation {
 		rightMotor.rotate(convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), false);
 	}
 	
+	public void ringDetection() {
+		leftMotor.rotate(convertDistance(Game.WHEEL_RAD, 19.05), true);
+		rightMotor.rotate(convertDistance(Game.WHEEL_RAD, 19.05), false);
+	}
 	
 	/**
 	 * this method navigate the robot to the ring set, find the right position of
@@ -319,24 +323,22 @@ public class Navigation {
 		} else if (currentX < TR[0] && Math.abs(currentX-TR[0]) > 0.9) {
 			travelTo(TR[0]-2, TR[1]);
 			turnTo(90);
-			selfCorrection();
+	
 			moveOneTileWithCorrection();
-			moveOneTileWithCorrection();
+			ringDetection();
+			//moveOneTileWithCorrection();
 			
 		} else if (currentX > TR[0] && Math.abs(currentX-TR[0]) > 0.9) {
 			travelTo(TR[0]+2, TR[1]);
 			turnTo(270);
-			selfCorrection();
+			
 			moveOneTileWithCorrection();
-			moveOneTileWithCorrection();
+			ringDetection();
+			//moveOneTileWithCorrection();
 		}
 		Sound.beepSequence();
 	}
 
-	
-	public void selfCorrection() {
-		
-	}
 	
 	/**
 	 * this method approaches the ring set by paying attention to the reading of us

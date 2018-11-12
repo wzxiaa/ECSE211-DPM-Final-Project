@@ -8,6 +8,7 @@ import ca.mcgill.ecse211.localization.UltrasonicLocalizer;
 import ca.mcgill.ecse211.odometer.Odometer;
 import ca.mcgill.ecse211.odometer.OdometerExceptions;
 import ca.mcgill.ecse211.threads.LightPoller;
+import ca.mcgill.ecse211.threads.RGBPoller;
 import ca.mcgill.ecse211.threads.SensorData;
 import ca.mcgill.ecse211.threads.ThreadControl;
 import ca.mcgill.ecse211.threads.UltrasonicPoller;
@@ -153,11 +154,20 @@ public class RingGame {
 		lightPoller = new LightPoller(backLight, new float[2][backLight[1].sampleSize()], sensorData);
 		Thread lightThread = new Thread(lightPoller);
 		lightThread.start();
+	
+		//rgb poller starting
+		Port rgbPort = LocalEV3.get().getPort("S1");
+		EV3ColorSensor rgbSensor = new EV3ColorSensor(rgbPort);
+		SampleProvider frontlight[]= new SampleProvider[1];
+		frontlight[0] = rgbSensor.getRGBMode();
+		rgbPoller = new RGBPoller(frontlight,new float[2][frontlight[0].sampleSize()],sensorData);
+		Thread rgbThread = new Thread(rgbPoller);
+		rgbThread.start();
+		
+		
 		// setting up the coordinates for the starting corner
 		GameParameter.generateStartingCorner();
-		// Thread fLgPoller1 = new RGBPoller(frontLight, new
-		// float[frontLight.sampleSize()],
-		// sensorData;
+		
 	}
 
 	/**
@@ -180,17 +190,21 @@ public class RingGame {
 				//ringRetrieval.ringScanning();
 				
 				
-				usLoc.localize(buttonChoice);
-				lgLoc.localize(GameParameter.SC);
+				//usLoc.localize(buttonChoice);
+				//lgLoc.localize(GameParameter.SC);
 				//navigation.travelTo(3,3);
 				
-				navigation.goToTunnel(GameParameter.TNG_LL, GameParameter.TNG_RR, GameParameter.GreenCorner);
-				navigation.goThroughTunnel(GameParameter.TNG_LL, GameParameter.TNG_RR);
-				navigation.goToRingSet(GameParameter.TG);
-				Sound.beepSequence();
+				//navigation.goToTunnel(GameParameter.TNG_LL, GameParameter.TNG_RR, GameParameter.GreenCorner);
+				//navigation.goThroughTunnel(GameParameter.TNG_LL, GameParameter.TNG_RR);
+		
+				
+				//navigation.goToRingSet(GameParameter.TG);
+				ringRetrieval.performColorDetection();
+				//Sound.beepSequence();
 				// navigation.travelTo(GameParameter.TNR_UR_RED[0],GameParameter.TNR_UR_RED[0]);
-				ringRetrieval.grabUpperRing();
-				ringRetrieval.grabLowerRing();
+				
+				//ringRetrieval.grabUpperRing();
+				//ringRetrieval.grabLowerRing();
 			}
 		}).start();
 	}
