@@ -179,7 +179,7 @@ public class RingGame {
 			public void run() {
 				//ringRetrieval.ringScanning();
 				
-				ringRetrieval.grab();
+				ringRetrieval.grabUpperRing();
 				
 				//usLoc.localize(buttonChoice);
 				//lgLoc.localize(GameParameter.SC);
