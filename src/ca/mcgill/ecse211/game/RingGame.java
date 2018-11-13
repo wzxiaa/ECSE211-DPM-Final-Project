@@ -188,31 +188,26 @@ public class RingGame {
 		// spawn a new Thread to avoid localization from blocking
 		(new Thread() {
 			public void run() {
-				//ringRetrieval.ringScanning();
 				
-				colorDetector.detectColor();
+				//usLoc.localize(buttonChoice);
+				//lgLoc.localize(GameParameter.SC);
+			
+				//navigation.goToTunnel(GameParameter.TNG_LL, GameParameter.TNG_RR, GameParameter.GreenCorner);
+				//navigation.goThroughTunnel(GameParameter.TNG_LL, GameParameter.TNG_RR);
+				//navigation.goToRingSet(GameParameter.TG);
+				//navigation.ringDetection();
 				
-				
-				/*
-				usLoc.localize(buttonChoice);
-				lgLoc.localize(GameParameter.SC);
-				//navigation.travelTo(3,3);
-				
-				navigation.goToTunnel(GameParameter.TNG_LL, GameParameter.TNG_RR, GameParameter.GreenCorner);
-				navigation.goThroughTunnel(GameParameter.TNG_LL, GameParameter.TNG_RR);
-		
-				
-				navigation.goToRingSet(GameParameter.TG);
-				ringRetrieval.performColorDetection();
-				ringRetrieval.grabUpperRing();
-				
-				ringRetrieval.grabLowerRing();
-				*/
 				//Sound.beepSequence();
-				// navigation.travelTo(GameParameter.TNR_UR_RED[0],GameParameter.TNR_UR_RED[0]);
 				
-				//ringRetrieval.grabUpperRing();
-				//ringRetrieval.grabLowerRing();
+				navigation.ringDetection();
+				colorDetector.scanUpperRing();
+				navigation.moveOneTileWithCorrection();
+				navigation.ringDetection2();
+				
+				ringRetrieval.grabUpperRing();
+				ringRetrieval.grabLowerRing();
+				
+			
 			}
 		}).start();
 	}

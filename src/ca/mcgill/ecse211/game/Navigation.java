@@ -126,7 +126,7 @@ public class Navigation {
 		odometer.setTheta(theta);
 	}
 
-	private void moveOneTileWithCorrection() {
+	public void moveOneTileWithCorrection() {
 		leftMotor.forward();
 		rightMotor.forward();
 		while (leftMotor.isMoving() || rightMotor.isMoving()) {
@@ -306,8 +306,16 @@ public class Navigation {
 	}
 	
 	public void ringDetection() {
+		leftMotor.setSpeed(50);
+		rightMotor.setSpeed(50);
 		leftMotor.rotate(convertDistance(Game.WHEEL_RAD, 19.05), true);
 		rightMotor.rotate(convertDistance(Game.WHEEL_RAD, 19.05), false);
+	}
+	public void ringDetection2() {
+		leftMotor.setSpeed(50);
+		rightMotor.setSpeed(50);
+		leftMotor.rotate(convertDistance(Game.WHEEL_RAD, 1.5), true);
+		rightMotor.rotate(convertDistance(Game.WHEEL_RAD, 1.5), false);
 	}
 	
 	/**

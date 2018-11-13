@@ -24,22 +24,22 @@ public class RingRetrieval {
 	
 	public void grabUpperRing() {
 		foreArmMotor.setSpeed(foreArmSpeed);
-		elbowMotor.setSpeed(elbowMotorRotationSpeed);
-		foreArmMotor.rotate(60);
-		elbowMotor.rotate(-105);
-		foreArmMotor.rotate(-100);
+		elbowMotor.setSpeed(50);
+		foreArmMotor.rotate(75);
+		elbowMotor.rotate(-110);
+		foreArmMotor.rotate(-115);
 		foreArmMotor.rotate(40);
 	}
 	
 	public void grabLowerRing() {
 		foreArmMotor.setSpeed(250);
-		elbowMotor.setSpeed(elbowMotorRotationSpeed);
-		foreArmMotor.rotate(60);
-		elbowMotor.rotate(-50);
+		elbowMotor.setSpeed(50);
+		foreArmMotor.rotate(75);
+		elbowMotor.rotate(-35);
 		foreArmMotor.rotate(-100);
 		foreArmMotor.rotate(100);
-		elbowMotor.rotate(155);
-		foreArmMotor.rotate(-60);
+		elbowMotor.rotate(145);
+		foreArmMotor.rotate(-75);
 	}	
 	
 }

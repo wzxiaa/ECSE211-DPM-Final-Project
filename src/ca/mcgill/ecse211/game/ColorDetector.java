@@ -189,22 +189,17 @@ public class ColorDetector {
 			display.clear();
 		}	
 	}
-	/*
-	public void performColorDetection() {
-		foreArmMotor.setSpeed(10);
-		elbowMotor.setSpeed(elbowMotorRotationSpeed);
-		elbowMotor.rotate(-100);
-		foreArmMotor.rotate(-20);
-		elbowMotor.setSpeed(10);
-		elbowMotor.rotate(-70);
-	}*/
+	
 	
 	public void scanUpperRing() {
-		foreArmMotor.setSpeed(10);
-		elbowMotor.setSpeed(elbowMotorRotationSpeed);
-		elbowMotor.rotate(-140);
-		foreArmMotor.rotate(-20);
+		foreArmMotor.setSpeed(70);
+		elbowMotor.setSpeed(50);
+		elbowMotor.rotate(-150);
+		foreArmMotor.rotate(-27);
 		detectColor();
+		foreArmMotor.rotate(27);
+		elbowMotor.rotate(150);
+		
 	}
 
 }
