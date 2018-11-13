@@ -13,7 +13,7 @@ import lejos.hardware.motor.EV3LargeRegulatedMotor;
  * 
  */
 public class UltrasonicLocalizer {
-  private static final int ROTATE_SPEED = 80;
+  private static final int ROTATE_SPEED = 120;
   private EV3LargeRegulatedMotor leftMotor;
   private EV3LargeRegulatedMotor rightMotor;
 

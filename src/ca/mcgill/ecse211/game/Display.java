@@ -16,7 +16,7 @@ public class Display implements Runnable {
   private TextLCD lcd;
   private double[] position;
   private double[] data;
-  private int[] rgb;
+  private float[] rgb;
   private final long DISPLAY_PERIOD = 25;
   private long timeout = Long.MAX_VALUE;
 

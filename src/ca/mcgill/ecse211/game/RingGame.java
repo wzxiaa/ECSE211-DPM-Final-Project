@@ -145,8 +145,9 @@ public class RingGame {
 		// Start odometer and odometer display
 		Thread odoThread = new Thread(odometer);
 		odoThread.start();
-		Thread odoDisplay = new Thread(display);
-		odoDisplay.start();
+		
+		//Thread odoDisplay = new Thread(display);
+		//odoDisplay.start();
 		// Start ultrasonic and light sensors
 		usPoller = new UltrasonicPoller(usDistance, usData, sensorData);
 		Thread usThread = new Thread(usPoller);
@@ -163,7 +164,6 @@ public class RingGame {
 		rgbPoller = new RGBPoller(frontlight,new float[2][frontlight[0].sampleSize()],sensorData);
 		Thread rgbThread = new Thread(rgbPoller);
 		rgbThread.start();
-		
 		
 		// setting up the coordinates for the starting corner
 		GameParameter.generateStartingCorner();
@@ -183,23 +183,31 @@ public class RingGame {
 		final UltrasonicLocalizer usLoc = new UltrasonicLocalizer(navigation, Game.leftMotor, Game.rightMotor);
 		final LightLocalizer lgLoc = new LightLocalizer(navigation, Game.leftMotor, Game.rightMotor);
 		final RingRetrieval ringRetrieval = new RingRetrieval(Game.leftMotor, Game.rightMotor, Game.elbowMotor, Game.foreArmMotor);
+		final ColorDetector colorDetector = new ColorDetector(Game.leftMotor, Game.rightMotor, Game.elbowMotor, Game.foreArmMotor);
 		// final RingSearcher searcher = new RingSearcher(storageMotor, rodMotor);
 		// spawn a new Thread to avoid localization from blocking
 		(new Thread() {
 			public void run() {
 				//ringRetrieval.ringScanning();
 				
+				colorDetector.detectColor();
 				
-				//usLoc.localize(buttonChoice);
-				//lgLoc.localize(GameParameter.SC);
+				
+				/*
+				usLoc.localize(buttonChoice);
+				lgLoc.localize(GameParameter.SC);
 				//navigation.travelTo(3,3);
 				
-				//navigation.goToTunnel(GameParameter.TNG_LL, GameParameter.TNG_RR, GameParameter.GreenCorner);
-				//navigation.goThroughTunnel(GameParameter.TNG_LL, GameParameter.TNG_RR);
+				navigation.goToTunnel(GameParameter.TNG_LL, GameParameter.TNG_RR, GameParameter.GreenCorner);
+				navigation.goThroughTunnel(GameParameter.TNG_LL, GameParameter.TNG_RR);
 		
 				
-				//navigation.goToRingSet(GameParameter.TG);
+				navigation.goToRingSet(GameParameter.TG);
 				ringRetrieval.performColorDetection();
+				ringRetrieval.grabUpperRing();
+				
+				ringRetrieval.grabLowerRing();
+				*/
 				//Sound.beepSequence();
 				// navigation.travelTo(GameParameter.TNR_UR_RED[0],GameParameter.TNR_UR_RED[0]);
 				

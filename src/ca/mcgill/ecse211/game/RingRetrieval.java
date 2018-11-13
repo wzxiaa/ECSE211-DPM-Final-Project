@@ -40,17 +40,6 @@ public class RingRetrieval {
 		foreArmMotor.rotate(100);
 		elbowMotor.rotate(155);
 		foreArmMotor.rotate(-60);
-	}
-	
-	public void performColorDetection() {
-		foreArmMotor.setSpeed(10);
-		elbowMotor.setSpeed(elbowMotorRotationSpeed);
-		elbowMotor.rotate(-100);
-		foreArmMotor.rotate(-20);
-		elbowMotor.setSpeed(10);
-		elbowMotor.rotate(-70);
-		
-	}
-	
+	}	
 	
 }

@@ -27,9 +27,9 @@ public class RGBPoller extends LightPoller{
   protected void runMethod() {
     us[0].fetchSample(lgData[0], 0); // acquire data at offset 0
     // get RGB values from buffer, multiply by 100 for convenience and allow it to be cast to int
-    int r = (int) (lgData[0][0] * 100); // extract from buffer, cast to int
-    int g = (int) (lgData[0][1] * 100); // extract from buffer, cast to int
-    int b = (int) (lgData[0][2] * 100); // extract from buffer, cast to int
+    float r = (lgData[0][0]); // extract from buffer, cast to int
+    float g = (lgData[0][1]); // extract from buffer, cast to int
+    float b = (lgData[0][2]); // extract from buffer, cast to int
     cont.setRGB(r, g, b); // now take action depending on value
   }
 }

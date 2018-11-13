@@ -22,6 +22,7 @@ import lejos.hardware.motor.EV3LargeRegulatedMotor;
  * 
  */
 public class Navigation {
+	private static final int TUNNEL_SPEED = 250;
 	private static final int FORWARD_SPEED = 120;
 	private static final int ROTATE_SPEED = 80;
 	private static final int ACCELERATION = 300;
@@ -139,6 +140,18 @@ public class Navigation {
 				rightMotor.stop(true);
 			}
 		}
+	}
+	
+	public void moveWithCorrectionInTunnel() {
+		moveOneTileWithCorrection();
+		leftMotor.setSpeed(TUNNEL_SPEED);
+		rightMotor.setSpeed(TUNNEL_SPEED);
+		for(int i=0; i<2; i++) {
+			moveOneTileWithCorrection();
+		}
+		leftMotor.setSpeed(TUNNEL_SPEED);
+		rightMotor.setSpeed(TUNNEL_SPEED);
+		moveOneTileWithCorrection();
 	}
 
 	/**
@@ -263,15 +276,9 @@ public class Navigation {
 	 * method)
 	 */
 	public void goThroughTunnel(int[] ll, int[] ur) {
-		for (int i = 0; i < 4; i++) {
-			moveOneTileWithCorrection();
-			try {
-				Thread.sleep(500);
-			}catch(Exception e) {
-				
-			}
-			Sound.beep();
-		}
+		moveWithCorrectionInTunnel();
+		leftMotor.setSpeed(FORWARD_SPEED);
+		leftMotor.setSpeed(FORWARD_SPEED);
 		leftMotor.rotate(-convertDistance(Game.WHEEL_RAD, Game.SEN_DIS), true);
 		rightMotor.rotate(-convertDistance(Game.WHEEL_RAD, Game.SEN_DIS), false);
 		//after passing through the tunnel, turn 90 degree to the right
@@ -325,7 +332,7 @@ public class Navigation {
 			turnTo(90);
 	
 			moveOneTileWithCorrection();
-			ringDetection();
+			//ringDetection();
 			//moveOneTileWithCorrection();
 			
 		} else if (currentX > TR[0] && Math.abs(currentX-TR[0]) > 0.9) {
@@ -333,7 +340,7 @@ public class Navigation {
 			turnTo(270);
 			
 			moveOneTileWithCorrection();
-			ringDetection();
+			//ringDetection();
 			//moveOneTileWithCorrection();
 		}
 		Sound.beepSequence();
