@@ -92,6 +92,13 @@ public class RingGame {
 			GameParameter.TNG_LL[0] = lowerLeftCornerGreenTunnelX;
 			int lowerLeftCornerGreenTunnelY = ((Long) data.get("TNG_LL_y")).intValue();
 			GameParameter.TNG_LL[1] = lowerLeftCornerGreenTunnelY;
+			
+			       int greenRingSetX = ((Long) data.get("TG_x")).intValue();
+			GameParameter.TG[0] = greenRingSetX;
+			int greenRingSetY = ((Long) data.get("TG_y")).intValue();
+			GameParameter.TG[1] = greenRingSetY;
+			
+			
 		} catch (Exception e) {
 			System.err.println("Error: " + e.getMessage());
 		}
@@ -189,23 +196,30 @@ public class RingGame {
 		(new Thread() {
 			public void run() {
 				
-				//usLoc.localize(buttonChoice);
-				//lgLoc.localize(GameParameter.SC);
+				usLoc.localize(buttonChoice);
+				lgLoc.localize(GameParameter.SC);
 			
-				//navigation.goToTunnel(GameParameter.TNG_LL, GameParameter.TNG_RR, GameParameter.GreenCorner);
-				//navigation.goThroughTunnel(GameParameter.TNG_LL, GameParameter.TNG_RR);
-				//navigation.goToRingSet(GameParameter.TG);
-				//navigation.ringDetection();
+				//navigation.travelTo(6,2);
 				
-				//Sound.beepSequence();
+				
+				navigation.goToTunnel(GameParameter.TNG_LL, GameParameter.TNG_RR, GameParameter.GreenCorner);
+				navigation.goThroughTunnel(GameParameter.TNG_LL, GameParameter.TNG_RR);
+				navigation.goToRingSet(GameParameter.TG);
 				
 				navigation.ringDetection();
+				
+				Sound.beepSequence();	
+				
+				//navigation.ringDetection();
 				colorDetector.scanUpperRing();
+				
+				
 				navigation.moveOneTileWithCorrection();
-				navigation.ringDetection2();
+				navigation.ringDetection2(); //move 1.5cm
 				
 				ringRetrieval.grabUpperRing();
 				ringRetrieval.grabLowerRing();
+				
 				
 			
 			}

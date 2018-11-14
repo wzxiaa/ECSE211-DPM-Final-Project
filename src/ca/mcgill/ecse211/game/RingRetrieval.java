@@ -26,7 +26,7 @@ public class RingRetrieval {
 		foreArmMotor.setSpeed(foreArmSpeed);
 		elbowMotor.setSpeed(50);
 		foreArmMotor.rotate(75);
-		elbowMotor.rotate(-110);
+		elbowMotor.rotate(-103);//105
 		foreArmMotor.rotate(-115);
 		foreArmMotor.rotate(40);
 	}
@@ -35,7 +35,7 @@ public class RingRetrieval {
 		foreArmMotor.setSpeed(250);
 		elbowMotor.setSpeed(50);
 		foreArmMotor.rotate(75);
-		elbowMotor.rotate(-35);
+		elbowMotor.rotate(-42);
 		foreArmMotor.rotate(-100);
 		foreArmMotor.rotate(100);
 		elbowMotor.rotate(145);

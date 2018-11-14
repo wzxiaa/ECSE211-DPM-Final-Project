@@ -67,7 +67,7 @@ public class Navigation {
 		double dX = x - odometer.getXYT()[0];
 		double dY = y - odometer.getXYT()[1];
 
-		double theta = 0;
+		double theta = odometer.getXYT()[2];
 
 		if (dY > 0.1) {
 			turnTo(0);
@@ -75,7 +75,8 @@ public class Navigation {
 		} else if (dY < -0.1) {
 			turnTo(180);
 			theta = 180;
-		}
+		} 
+		
 		moveWithCorrection(dY, theta);
 		odometer.setY(y);
 
@@ -144,13 +145,17 @@ public class Navigation {
 	
 	public void moveWithCorrectionInTunnel() {
 		moveOneTileWithCorrection();
+		
 		leftMotor.setSpeed(TUNNEL_SPEED);
 		rightMotor.setSpeed(TUNNEL_SPEED);
+		
 		for(int i=0; i<2; i++) {
 			moveOneTileWithCorrection();
 		}
-		leftMotor.setSpeed(TUNNEL_SPEED);
-		rightMotor.setSpeed(TUNNEL_SPEED);
+ 		
+		leftMotor.setSpeed(FORWARD_SPEED);
+		rightMotor.setSpeed(FORWARD_SPEED);
+		
 		moveOneTileWithCorrection();
 	}
 
@@ -276,33 +281,33 @@ public class Navigation {
 	 * method)
 	 */
 	public void goThroughTunnel(int[] ll, int[] ur) {
+		
 		moveWithCorrectionInTunnel();
+		
 		leftMotor.setSpeed(FORWARD_SPEED);
 		leftMotor.setSpeed(FORWARD_SPEED);
+		
 		leftMotor.rotate(-convertDistance(Game.WHEEL_RAD, Game.SEN_DIS), true);
 		rightMotor.rotate(-convertDistance(Game.WHEEL_RAD, Game.SEN_DIS), false);
 		//after passing through the tunnel, turn 90 degree to the right
 		leftMotor.rotate(convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), true);
 		rightMotor.rotate(-convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), false);	
-		moveOneTileWithCorrection();
-		leftMotor.rotate(-convertDistance(Game.WHEEL_RAD, Game.SEN_DIS), true);
-		rightMotor.rotate(-convertDistance(Game.WHEEL_RAD, Game.SEN_DIS), false);
+		
+		selfLocalize();
 	}
 	
 	/**
 	 * 
 	 */
-	public void selfLocalize(int[] ur) {
-		moveOneTileWithCorrection();
-		leftMotor.rotate(-convertDistance(Game.WHEEL_RAD, Game.SEN_DIS), true);
-		rightMotor.rotate(-convertDistance(Game.WHEEL_RAD, Game.SEN_DIS), false);
-		leftMotor.rotate(convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), true);
-		rightMotor.rotate(-convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), false);
+	public void selfLocalize() {
 		moveOneTileWithCorrection();
 		leftMotor.rotate(-convertDistance(Game.WHEEL_RAD, Game.SEN_DIS), true);
 		rightMotor.rotate(-convertDistance(Game.WHEEL_RAD, Game.SEN_DIS), false);
 		leftMotor.rotate(-convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), true);
 		rightMotor.rotate(convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), false);
+		moveOneTileWithCorrection();
+		leftMotor.rotate(-convertDistance(Game.WHEEL_RAD, Game.SEN_DIS), true);
+		rightMotor.rotate(-convertDistance(Game.WHEEL_RAD, Game.SEN_DIS), false);
 	}
 	
 	public void ringDetection() {
@@ -330,22 +335,21 @@ public class Navigation {
 			if(currentY > TR[1]) {
 				travelTo(TR[0], TR[1]+2);
 				//turnTo(90);
-				
 			} else if (currentY < TR[1]) {
 				travelTo(TR[0], TR[1]-2);
 				//turnTo(270);
 			}
-		} else if (currentX < TR[0] && Math.abs(currentX-TR[0]) > 0.9) {
+		} else if (currentX < TR[0] && Math.abs(currentX-TR[0]) > 0.8) {
 			travelTo(TR[0]-2, TR[1]);
-			turnTo(90);
+			//turnTo(90);
 	
 			moveOneTileWithCorrection();
 			//ringDetection();
 			//moveOneTileWithCorrection();
 			
-		} else if (currentX > TR[0] && Math.abs(currentX-TR[0]) > 0.9) {
+		} else if (currentX > TR[0] && Math.abs(currentX-TR[0]) > 0.8) {
 			travelTo(TR[0]+2, TR[1]);
-			turnTo(270);
+			//turn(180);
 			
 			moveOneTileWithCorrection();
 			//ringDetection();

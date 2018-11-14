@@ -99,6 +99,7 @@ public class LightLocalizer {
     
     
     odometer.setTheta(sC[2]);
+    
     odometer.setX(sC[0]);
     odometer.setY(sC[1]);
     

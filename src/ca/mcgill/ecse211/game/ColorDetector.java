@@ -194,11 +194,12 @@ public class ColorDetector {
 	public void scanUpperRing() {
 		foreArmMotor.setSpeed(70);
 		elbowMotor.setSpeed(50);
-		elbowMotor.rotate(-150);
-		foreArmMotor.rotate(-27);
+		elbowMotor.rotate(-146);
+		foreArmMotor.rotate(-27
+				);
 		detectColor();
 		foreArmMotor.rotate(27);
-		elbowMotor.rotate(150);
+		elbowMotor.rotate(146);
 		
 	}
 
