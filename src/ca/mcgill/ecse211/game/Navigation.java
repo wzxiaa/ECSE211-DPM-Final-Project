@@ -206,8 +206,8 @@ public class Navigation {
 				moveOneTileWithCorrection();
 				leftMotor.rotate(convertDistance(Game.WHEEL_RAD, 5.5), true);
 				rightMotor.rotate(convertDistance(Game.WHEEL_RAD, 5.5), false);
-				leftMotor.rotate(convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), true);
-				rightMotor.rotate(-convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), false);
+				leftMotor.rotate(-convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), true);
+				rightMotor.rotate(convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), false);
 			} else if(GameParameter.determineTunnelHeading(ll, ur) == GameParameter.TunnelHeading.EAST) {
 				travelTo(ll[0]-1,ll[1]);
 				leftMotor.rotate(-convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), true);
@@ -334,14 +334,14 @@ public class Navigation {
 		if(Math.abs(currentX-TR[0]) < (0.2)) {
 			if(currentY > TR[1]) {
 				travelTo(TR[0], TR[1]+2);
-				//turnTo(90);
+				turnTo(180);
 			} else if (currentY < TR[1]) {
 				travelTo(TR[0], TR[1]-2);
-				//turnTo(270);
+				turnTo(0);
 			}
 		} else if (currentX < TR[0] && Math.abs(currentX-TR[0]) > 0.8) {
 			travelTo(TR[0]-2, TR[1]);
-			//turnTo(90);
+			turnTo(90);
 	
 			moveOneTileWithCorrection();
 			//ringDetection();
@@ -349,12 +349,15 @@ public class Navigation {
 			
 		} else if (currentX > TR[0] && Math.abs(currentX-TR[0]) > 0.8) {
 			travelTo(TR[0]+2, TR[1]);
-			//turn(180);
+			turnTo(270);
 			
 			moveOneTileWithCorrection();
 			//ringDetection();
 			//moveOneTileWithCorrection();
 		}
+		
+		
+		
 		Sound.beepSequence();
 	}
 

@@ -27,7 +27,7 @@ import lejos.robotics.SampleProvider;
 public class RingGame {
 
 	// ** Set these as appropriate for your team and current situation **
-	private static final String SERVER_IP = "192.168.2.9";
+	private static final String SERVER_IP = "192.168.2.50";
 	private static final int TEAM_NUMBER = 14;
 
 	// Enable/disable printing of debug info from the WiFi class
@@ -52,7 +52,7 @@ public class RingGame {
 	private static ThreadControl lightPoller;
 
 	public static void main(String[] args) {
-		/*
+		
 		WifiConnection conn = new WifiConnection(SERVER_IP, TEAM_NUMBER, ENABLE_DEBUG_WIFI_PRINT);
 		try {
 			Map data = conn.getData();
@@ -104,7 +104,7 @@ public class RingGame {
 		}
 		Button.waitForAnyPress();
 		
-*/
+
 		// Setting up the game
 
 		try {
