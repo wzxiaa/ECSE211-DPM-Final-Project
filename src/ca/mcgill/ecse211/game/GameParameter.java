@@ -36,7 +36,7 @@ public enum GameParameter {
 	/*
 	 * Green island
 	 */
-	public static int[] Green_LL = { 4 , 0 };
+	public static int[] Green_LL = { 2 , 0 };
 
 	public static int[] Green_UR = { 8 , 3 } ;
 	
@@ -45,14 +45,14 @@ public enum GameParameter {
 	 */
 	public static int[] Island_LL = { 0 , 5 };
 
-	public static int[] Island_UR = { 5 , 8 };
+	public static int[] Island_UR = { 6 , 8 };
 
 	/*
 	 * Green tunnel
 	 */
-	public static int[] TNG_LL = { 4 , 3 };
+	public static int[] TNG_LL = { 2 , 3 };
 	
-	public static int[] TNG_RR = { 5 , 5 };
+	public static int[] TNG_RR = { 3 , 5 };
 	
 
 	public static int[] SC = new int[3];
@@ -62,7 +62,7 @@ public enum GameParameter {
 	 */
 	public static int[] TR = new int[2];
 	
-	public static int[] TG = { 2 , 6 };
+	public static int[] TG = { 5 , 7 };
 	
 	public static double startingHeading;
 
@@ -108,7 +108,7 @@ public enum GameParameter {
 	                return TunnelHeading.WEST;
 	            }
 	        } else if (GreenCorner == 3) {
-	            if(TNG_LL[0] <Green_UR[0] && TNG_UR[0] <= Green_UR[0]) {
+	            if(TNG_LL[1] < Green_LL[1]) {
 	                return TunnelHeading.SOUTH;
 	            } else {
 	                return TunnelHeading.EAST;
