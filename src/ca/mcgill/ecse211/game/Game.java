@@ -63,7 +63,7 @@ public enum Game {
 	 * This variable stores the distance between the light sensor and center of the
 	 * robot in cm
 	 */
-	public static final double SEN_DIS = 10.5;
+	public static final double SEN_DIS = 11;
 
 
 }
