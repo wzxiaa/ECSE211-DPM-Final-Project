@@ -26,7 +26,7 @@ public class RingRetrieval {
 		foreArmMotor.setSpeed(foreArmSpeed);
 		elbowMotor.setSpeed(50);
 		foreArmMotor.rotate(75);
-		elbowMotor.rotate(-103);//105
+		elbowMotor.rotate(-101);//105
 		foreArmMotor.rotate(-115);
 		foreArmMotor.rotate(40);
 	}
@@ -35,11 +35,41 @@ public class RingRetrieval {
 		foreArmMotor.setSpeed(250);
 		elbowMotor.setSpeed(50);
 		foreArmMotor.rotate(75);
-		elbowMotor.rotate(-42);
+		elbowMotor.rotate(-36);
+		
 		foreArmMotor.rotate(-100);
+		
+		leftMotor.rotate(-convertDistance(Game.WHEEL_RAD, 10), true);
+		rightMotor.rotate(-convertDistance(Game.WHEEL_RAD,10), false);
+		
 		foreArmMotor.rotate(100);
-		elbowMotor.rotate(145);
+		
+		elbowMotor.rotate(137);
 		foreArmMotor.rotate(-75);
 	}	
+	
+	/**
+	 * This method allows the conversion of a distance to the total rotation of each
+	 * wheel need to cover that distance.
+	 * 
+	 * @param radius   The radius of our wheels
+	 * @param distance The distance traveled
+	 * @return A converted distance
+	 */
+	public static int convertDistance(double radius, double distance) {
+		return (int) ((180.0 * distance) / (Math.PI * radius));
+	}
+
+	/**
+	 * This method allows the conversion of an angle value
+	 * 
+	 * @param radius   The radius of our wheels
+	 * @param distance The distance traveled
+	 * @param angle    The angle to convert
+	 * @return A converted angle
+	 */
+	private static int convertAngle(double radius, double width, double angle) {
+		return convertDistance(radius, Math.PI * width * angle / 360.0);
+	}
 	
 }

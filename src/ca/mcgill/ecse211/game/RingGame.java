@@ -93,7 +93,7 @@ public class RingGame {
 			int lowerLeftCornerGreenTunnelY = ((Long) data.get("TNG_LL_y")).intValue();
 			GameParameter.TNG_LL[1] = lowerLeftCornerGreenTunnelY;
 			
-			       int greenRingSetX = ((Long) data.get("TG_x")).intValue();
+			int greenRingSetX = ((Long) data.get("TG_x")).intValue();
 			GameParameter.TG[0] = greenRingSetX;
 			int greenRingSetY = ((Long) data.get("TG_y")).intValue();
 			GameParameter.TG[1] = greenRingSetY;
@@ -103,7 +103,6 @@ public class RingGame {
 			System.err.println("Error: " + e.getMessage());
 		}
 		Button.waitForAnyPress();
-		
 
 		// Setting up the game
 
@@ -213,7 +212,8 @@ public class RingGame {
 				//navigation.ringDetection();
 				colorDetector.scanUpperRing();
 				
-				
+				//Game.leftMotor.setSpeed(120);
+				//Game.rightMotor.setSpeed(120);
 				navigation.moveOneTileWithCorrection();
 				navigation.ringDetection2(); //move 1.5cm
 				
