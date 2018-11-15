@@ -203,6 +203,8 @@ public class Navigation {
 		if(GameParameter.GreenCorner == 0) {
 			if(GameParameter.determineTunnelHeading(ll, ur) == GameParameter.TunnelHeading.NORTH) {
 				travelTo(ll[0],ll[1]-1);
+				turnTo(90);
+				
 				moveOneTileWithCorrection();
 				leftMotor.rotate(convertDistance(Game.WHEEL_RAD, 5.5), true);
 				rightMotor.rotate(convertDistance(Game.WHEEL_RAD, 5.5), false);
@@ -210,6 +212,8 @@ public class Navigation {
 				rightMotor.rotate(convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), false);
 			} else if(GameParameter.determineTunnelHeading(ll, ur) == GameParameter.TunnelHeading.EAST) {
 				travelTo(ll[0]-1,ll[1]);
+				turnTo(90);
+				
 				leftMotor.rotate(-convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), true);
 				rightMotor.rotate(convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), false);
 				moveOneTileWithCorrection();
@@ -220,8 +224,9 @@ public class Navigation {
 			}
 		} else if(GameParameter.GreenCorner == 1) {
 			if(GameParameter.determineTunnelHeading(ll, ur) == GameParameter.TunnelHeading.NORTH) {
-				Sound.beep();
 				travelTo(ur[0], ll[1]-1);
+				turnTo(270);
+				
 				moveOneTileWithCorrection();
 				leftMotor.rotate(convertDistance(Game.WHEEL_RAD, 5.5), true);
 				rightMotor.rotate(convertDistance(Game.WHEEL_RAD, 5.5), false);
@@ -229,6 +234,8 @@ public class Navigation {
 				rightMotor.rotate(-convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), false);
 			} else if(GameParameter.determineTunnelHeading(ll, ur) == GameParameter.TunnelHeading.WEST) {
 				travelTo(ur[0]+1, ur[1]-1);
+				turnTo(270);
+				
 				leftMotor.rotate(convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), true);
 				rightMotor.rotate(-convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), false);
 				moveOneTileWithCorrection();
@@ -240,6 +247,8 @@ public class Navigation {
 		} else if(GameParameter.GreenCorner == 2) {
 			if(GameParameter.determineTunnelHeading(ll, ur) == GameParameter.TunnelHeading.SOUTH) {
 				travelTo(ur[0], ur[1]+1);
+				turnTo(270);
+				
 				moveOneTileWithCorrection();
 				leftMotor.rotate(convertDistance(Game.WHEEL_RAD, 5.5), true);
 				rightMotor.rotate(convertDistance(Game.WHEEL_RAD, 5.5), false);
@@ -247,6 +256,8 @@ public class Navigation {
 				rightMotor.rotate(convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), false);
 			} else if (GameParameter.determineTunnelHeading(ll, ur) == GameParameter.TunnelHeading.WEST) {
 				travelTo(ur[0]+1, ur[1]);
+				turnTo(270);
+				
 				leftMotor.rotate(-convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), true);
 				rightMotor.rotate(convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), false);
 				moveOneTileWithCorrection();
@@ -257,16 +268,20 @@ public class Navigation {
 			}
 		} else if (GameParameter.GreenCorner == 3) {
 			if(GameParameter.determineTunnelHeading(ll, ur) == GameParameter.TunnelHeading.SOUTH) {
-				travelTo(ur[0]-1, ur[1]);
-				leftMotor.rotate(convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), true);
-				rightMotor.rotate(-convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), false);	
+				travelTo(ur[0]-1, ur[1]+1);
+				turnTo(90);
+				
 				moveOneTileWithCorrection();
 				leftMotor.rotate(convertDistance(Game.WHEEL_RAD, 5.5), true);
 				rightMotor.rotate(convertDistance(Game.WHEEL_RAD, 5.5), false);
-				leftMotor.rotate(-convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), true);
-				rightMotor.rotate(convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), false);
+				leftMotor.rotate(convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), true);
+				rightMotor.rotate(-convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), false);
 			} else if (GameParameter.determineTunnelHeading(ll,ur) == GameParameter.TunnelHeading.EAST){
 				travelTo(ll[0]-1, ll[1]+1);
+				turnTo(90);
+				
+				leftMotor.rotate(convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), true);
+				rightMotor.rotate(-convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), false);
 				moveOneTileWithCorrection();
 				leftMotor.rotate(convertDistance(Game.WHEEL_RAD, 5.5), true);
 				rightMotor.rotate(convertDistance(Game.WHEEL_RAD, 5.5), false);
@@ -308,9 +323,15 @@ public class Navigation {
 		moveOneTileWithCorrection();
 		leftMotor.rotate(-convertDistance(Game.WHEEL_RAD, Game.SEN_DIS), true);
 		rightMotor.rotate(-convertDistance(Game.WHEEL_RAD, Game.SEN_DIS), false);
+		leftMotor.rotate(convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), true);
+		rightMotor.rotate(-convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), false);
+		moveOneTileWithCorrection();
+		leftMotor.rotate(-convertDistance(Game.WHEEL_RAD, Game.SEN_DIS), true);
+		rightMotor.rotate(-convertDistance(Game.WHEEL_RAD, Game.SEN_DIS), false);
 	}
 	
 	public void ringDetection() {
+		moveOneTileWithCorrection();
 		leftMotor.setSpeed(50);
 		rightMotor.setSpeed(50);
 		leftMotor.rotate(convertDistance(Game.WHEEL_RAD, 19.05), true);
@@ -335,9 +356,13 @@ public class Navigation {
 			if(currentY > TR[1]) {
 				travelTo(TR[0], TR[1]+2);
 				turnTo(180);
+				moveOneTileWithCorrection();
+				
 			} else if (currentY < TR[1]) {
 				travelTo(TR[0], TR[1]-2);
 				turnTo(0);
+				moveOneTileWithCorrection();
+				
 			}
 		} else if (currentX < TR[0] && Math.abs(currentX-TR[0]) > 0.8) {
 			travelTo(TR[0]-2, TR[1]);
@@ -355,8 +380,10 @@ public class Navigation {
 			//ringDetection();
 			//moveOneTileWithCorrection();
 		}
+		leftMotor.rotate(-convertDistance(Game.WHEEL_RAD, Game.SEN_DIS), true);
+		rightMotor.rotate(-convertDistance(Game.WHEEL_RAD, Game.SEN_DIS), false);
 		
-		
+		selfLocalize();
 		
 		Sound.beep();
 		Sound.beep();
@@ -371,6 +398,22 @@ public class Navigation {
 	 */
 	public void approachRingSet() {
 		
+	}
+	
+	public void backOffOneTileWithCorrection() {
+		leftMotor.backward();
+		rightMotor.backward();
+		while (leftMotor.isMoving() || rightMotor.isMoving()) {
+			double left = data.getL()[0];
+			double right = data.getL()[1];
+			if (left < -5) {
+				leftMotor.stop(true);
+			}
+			if (right < -5
+					) {
+				rightMotor.stop(true);
+			}
+		}
 	}
 
 	/**
@@ -406,4 +449,5 @@ public class Navigation {
 	private static int convertAngle(double radius, double width, double angle) {
 		return convertDistance(radius, Math.PI * width * angle / 360.0);
 	}
+	
 }

@@ -195,8 +195,7 @@ public class ColorDetector {
 		foreArmMotor.setSpeed(70);
 		elbowMotor.setSpeed(50);
 		elbowMotor.rotate(-146);
-		foreArmMotor.rotate(-27
-				);
+		foreArmMotor.rotate(-27);
 		detectColor();
 		foreArmMotor.rotate(27);
 		elbowMotor.rotate(146);

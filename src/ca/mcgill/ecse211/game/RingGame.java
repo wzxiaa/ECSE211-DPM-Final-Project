@@ -52,7 +52,7 @@ public class RingGame {
 	private static ThreadControl lightPoller;
 
 	public static void main(String[] args) {
-		
+		/*
 		WifiConnection conn = new WifiConnection(SERVER_IP, TEAM_NUMBER, ENABLE_DEBUG_WIFI_PRINT);
 		try {
 			Map data = conn.getData();
@@ -103,6 +103,11 @@ public class RingGame {
 			System.err.println("Error: " + e.getMessage());
 		}
 		Button.waitForAnyPress();
+<<<<<<< HEAD
+=======
+		*/
+		
+>>>>>>> 5b845a7412d0f0e6350078d48d5ea4885969fae7
 
 		// Setting up the game
 
@@ -198,13 +203,14 @@ public class RingGame {
 				usLoc.localize(buttonChoice);
 				lgLoc.localize(GameParameter.SC);
 			
+				//navigation.turnTo(270);
 				//navigation.travelTo(6,2);
 				
 				
 				navigation.goToTunnel(GameParameter.TNG_LL, GameParameter.TNG_RR, GameParameter.GreenCorner);
 				navigation.goThroughTunnel(GameParameter.TNG_LL, GameParameter.TNG_RR);
 				navigation.goToRingSet(GameParameter.TG);
-				
+			
 				navigation.ringDetection();
 				
 				Sound.beepSequence();	
@@ -212,16 +218,19 @@ public class RingGame {
 				//navigation.ringDetection();
 				colorDetector.scanUpperRing();
 				
+<<<<<<< HEAD
 				//Game.leftMotor.setSpeed(120);
 				//Game.rightMotor.setSpeed(120);
+=======
+>>>>>>> 5b845a7412d0f0e6350078d48d5ea4885969fae7
 				navigation.moveOneTileWithCorrection();
 				navigation.ringDetection2(); //move 1.5cm
 				
 				ringRetrieval.grabUpperRing();
 				ringRetrieval.grabLowerRing();
 				
-				
-			
+				navigation.backOffOneTileWithCorrection();
+
 			}
 		}).start();
 	}
