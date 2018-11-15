@@ -103,7 +103,9 @@ public class LightLocalizer {
     odometer.setX(sC[0]);
     odometer.setY(sC[1]);
     
-    Sound.beepSequence();
+    Sound.beep();
+    Sound.beep();
+    Sound.beep();
   }
   
   

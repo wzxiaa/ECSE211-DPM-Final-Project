@@ -358,7 +358,10 @@ public class Navigation {
 		
 		
 		
-		Sound.beepSequence();
+		Sound.beep();
+		Sound.beep();
+		Sound.beep();
+		
 	}
 
 	
