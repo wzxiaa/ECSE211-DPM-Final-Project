@@ -24,6 +24,19 @@ import lejos.hardware.sensor.EV3UltrasonicSensor;
 import lejos.hardware.sensor.SensorModes;
 import lejos.robotics.SampleProvider;
 
+/**
+ * This the main class for the ring game. It sets up the wifi connection for
+ * parameters and starts the game accordingly.
+ * 
+ * @author Ajay Patel
+ * @author Fandi Yi
+ * @author Lucas Bellido
+ * @author Tianzhu Fu
+ * @author Nicolas Abdelnour
+ * @author Wenzong Xia
+ *
+ */
+
 public class RingGame {
 
 	// ** Set these as appropriate for your team and current situation **
@@ -53,64 +66,56 @@ public class RingGame {
 
 	public static void main(String[] args) {
 		/*
-		WifiConnection conn = new WifiConnection(SERVER_IP, TEAM_NUMBER, ENABLE_DEBUG_WIFI_PRINT);
-		try {
-			Map data = conn.getData();
-
-			int greenTeam = ((Long) data.get("GreenTeam")).intValue();
-			GameParameter.GreenTeam = greenTeam;
-
-			int greenCorner = ((Long) data.get("GreenCorner")).intValue();
-			GameParameter.GreenCorner = greenCorner;
-
-			int greenLowerLeftX = ((Long) data.get("Green_LL_x")).intValue();
-			GameParameter.Green_LL[0] = greenLowerLeftX;
-			int greenLowerLeftY = ((Long) data.get("Green_LL_y")).intValue();
-			GameParameter.Green_LL[1] = greenLowerLeftY;
-
-			int greenUpperRightX = ((Long) data.get("Green_UR_x")).intValue();
-			GameParameter.Green_UR[0] = greenUpperRightX;
-			int greenUpperRightY = ((Long) data.get("Green_UR_y")).intValue();
-			GameParameter.Green_UR[1] = greenUpperRightY;
-
-			int islandLowerLeftX = ((Long) data.get("Island_LL_x")).intValue();
-			GameParameter.Island_LL[0] = islandLowerLeftX;
-			int islandLowerLeftY = ((Long) data.get("Island_LL_y")).intValue();
-			GameParameter.Island_LL[1] = islandLowerLeftY;
-
-			int islandUpperRightX = ((Long) data.get("Island_UR_x")).intValue();
-			GameParameter.Island_UR[0] = islandUpperRightX;
-			int islandUpperRightY = ((Long) data.get("Island_UR_y")).intValue();
-			GameParameter.Island_UR[1] = islandUpperRightY;
-
-			int upperRightCornerGreenTunnelX = ((Long) data.get("TNG_UR_x")).intValue();
-			GameParameter.TNG_RR[0] = upperRightCornerGreenTunnelX;
-			int upperRightCornerGreenTunnelY = ((Long) data.get("TNG_UR_y")).intValue();
-			GameParameter.TNG_RR[1] = upperRightCornerGreenTunnelY;
-
-			int lowerLeftCornerGreenTunnelX = ((Long) data.get("TNG_LL_x")).intValue();
-			GameParameter.TNG_LL[0] = lowerLeftCornerGreenTunnelX;
-			int lowerLeftCornerGreenTunnelY = ((Long) data.get("TNG_LL_y")).intValue();
-			GameParameter.TNG_LL[1] = lowerLeftCornerGreenTunnelY;
-			
-			int greenRingSetX = ((Long) data.get("TG_x")).intValue();
-			GameParameter.TG[0] = greenRingSetX;
-			int greenRingSetY = ((Long) data.get("TG_y")).intValue();
-			GameParameter.TG[1] = greenRingSetY;
-			
-			
-		} catch (Exception e) {
-			System.err.println("Error: " + e.getMessage());
-		}
-		Button.waitForAnyPress();
-<<<<<<< HEAD
-=======
-		*/
-		
->>>>>>> 5b845a7412d0f0e6350078d48d5ea4885969fae7
+		 * WifiConnection conn = new WifiConnection(SERVER_IP, TEAM_NUMBER,
+		 * ENABLE_DEBUG_WIFI_PRINT); try { Map data = conn.getData();
+		 * 
+		 * int greenTeam = ((Long) data.get("GreenTeam")).intValue();
+		 * GameParameter.GreenTeam = greenTeam;
+		 * 
+		 * int greenCorner = ((Long) data.get("GreenCorner")).intValue();
+		 * GameParameter.GreenCorner = greenCorner;
+		 * 
+		 * int greenLowerLeftX = ((Long) data.get("Green_LL_x")).intValue();
+		 * GameParameter.Green_LL[0] = greenLowerLeftX; int greenLowerLeftY = ((Long)
+		 * data.get("Green_LL_y")).intValue(); GameParameter.Green_LL[1] =
+		 * greenLowerLeftY;
+		 * 
+		 * int greenUpperRightX = ((Long) data.get("Green_UR_x")).intValue();
+		 * GameParameter.Green_UR[0] = greenUpperRightX; int greenUpperRightY = ((Long)
+		 * data.get("Green_UR_y")).intValue(); GameParameter.Green_UR[1] =
+		 * greenUpperRightY;
+		 * 
+		 * int islandLowerLeftX = ((Long) data.get("Island_LL_x")).intValue();
+		 * GameParameter.Island_LL[0] = islandLowerLeftX; int islandLowerLeftY = ((Long)
+		 * data.get("Island_LL_y")).intValue(); GameParameter.Island_LL[1] =
+		 * islandLowerLeftY;
+		 * 
+		 * int islandUpperRightX = ((Long) data.get("Island_UR_x")).intValue();
+		 * GameParameter.Island_UR[0] = islandUpperRightX; int islandUpperRightY =
+		 * ((Long) data.get("Island_UR_y")).intValue(); GameParameter.Island_UR[1] =
+		 * islandUpperRightY;
+		 * 
+		 * int upperRightCornerGreenTunnelX = ((Long) data.get("TNG_UR_x")).intValue();
+		 * GameParameter.TNG_RR[0] = upperRightCornerGreenTunnelX; int
+		 * upperRightCornerGreenTunnelY = ((Long) data.get("TNG_UR_y")).intValue();
+		 * GameParameter.TNG_RR[1] = upperRightCornerGreenTunnelY;
+		 * 
+		 * int lowerLeftCornerGreenTunnelX = ((Long) data.get("TNG_LL_x")).intValue();
+		 * GameParameter.TNG_LL[0] = lowerLeftCornerGreenTunnelX; int
+		 * lowerLeftCornerGreenTunnelY = ((Long) data.get("TNG_LL_y")).intValue();
+		 * GameParameter.TNG_LL[1] = lowerLeftCornerGreenTunnelY;
+		 * 
+		 * int greenRingSetX = ((Long) data.get("TG_x")).intValue(); GameParameter.TG[0]
+		 * = greenRingSetX; int greenRingSetY = ((Long) data.get("TG_y")).intValue();
+		 * GameParameter.TG[1] = greenRingSetY;
+		 * 
+		 * 
+		 * } catch (Exception e) { System.err.println("Error: " + e.getMessage()); }
+		 * Button.waitForAnyPress();
+		 * 
+		 */
 
 		// Setting up the game
-
 		try {
 			preparation();
 			Button.waitForAnyPress();
@@ -121,14 +126,20 @@ public class RingGame {
 
 	}
 
+	/**
+	 * This method sets up ports for the two light sensors at the back and the light sensor at the front for 
+	 * color detection. 
+	 * Ï
+	 * @throws OdometerExceptions
+	 */
 	public static void preparation() throws OdometerExceptions {
 		// Motor Objects, and Robot related parameters
 		Port usPort = LocalEV3.get().getPort("S2");
 		// initialize multiple light ports in main
 		Port[] lgPorts = new Port[3];
 		// Light sensor sensor stuff
-		lgPorts[0] = LocalEV3.get().getPort("S4");	//S4
-		lgPorts[1] = LocalEV3.get().getPort("S3");	//s3
+		lgPorts[0] = LocalEV3.get().getPort("S4"); // S4
+		lgPorts[1] = LocalEV3.get().getPort("S3"); // s3
 		EV3ColorSensor[] lgSensors = new EV3ColorSensor[2];
 		for (int i = 0; i < lgSensors.length; i++) {
 			lgSensors[i] = new EV3ColorSensor(lgPorts[i]);
@@ -145,20 +156,13 @@ public class RingGame {
 		backLight[0] = lgSensors[0].getRedMode();
 		backLight[1] = lgSensors[1].getRedMode();
 		TextLCD lcd = LocalEV3.get().getTextLCD();
-		Display display = new Display(lcd);
-		// STEP 1: LOCALIZE to (1,1)
-		// ButtonChoice left or right
 		lcd.clear();
-		lcd.drawString("<  Left  |  Right >", 0, 0);
-		lcd.drawString(" falling | rising  ", 0, 1);
-		lcd.drawString("  edge   |  edge   ", 0, 2);
-		lcd.drawString("        \\/        ", 0, 3);
-		// Start odometer and odometer display
+		
 		Thread odoThread = new Thread(odometer);
 		odoThread.start();
-		
-		//Thread odoDisplay = new Thread(display);
-		//odoDisplay.start();
+
+		// Thread odoDisplay = new Thread(display);
+		// odoDisplay.start();
 		// Start ultrasonic and light sensors
 		usPoller = new UltrasonicPoller(usDistance, usData, sensorData);
 		Thread usThread = new Thread(usPoller);
@@ -166,24 +170,23 @@ public class RingGame {
 		lightPoller = new LightPoller(backLight, new float[2][backLight[1].sampleSize()], sensorData);
 		Thread lightThread = new Thread(lightPoller);
 		lightThread.start();
-	
-		//rgb poller starting
+
+		//set uo the light sensor for color detection
 		Port rgbPort = LocalEV3.get().getPort("S1");
 		EV3ColorSensor rgbSensor = new EV3ColorSensor(rgbPort);
-		SampleProvider frontlight[]= new SampleProvider[1];
+		SampleProvider frontlight[] = new SampleProvider[1];
 		frontlight[0] = rgbSensor.getRGBMode();
-		rgbPoller = new RGBPoller(frontlight,new float[2][frontlight[0].sampleSize()],sensorData);
+		rgbPoller = new RGBPoller(frontlight, new float[2][frontlight[0].sampleSize()], sensorData);
 		Thread rgbThread = new Thread(rgbPoller);
 		rgbThread.start();
-		
+
 		// setting up the coordinates for the starting corner
 		GameParameter.generateStartingCorner();
-		
+
 	}
 
 	/**
-	 * This method is called when the after the robot has been prepared and is ready
-	 * to compete
+	 * This method is to set up various components of the robot and is called after the gameis prepared
 	 * 
 	 * @throws OdometerExceptions
 	 */
@@ -193,42 +196,35 @@ public class RingGame {
 		final Navigation navigation = new Navigation(Game.leftMotor, Game.rightMotor);
 		final UltrasonicLocalizer usLoc = new UltrasonicLocalizer(navigation, Game.leftMotor, Game.rightMotor);
 		final LightLocalizer lgLoc = new LightLocalizer(navigation, Game.leftMotor, Game.rightMotor);
-		final RingRetrieval ringRetrieval = new RingRetrieval(Game.leftMotor, Game.rightMotor, Game.elbowMotor, Game.foreArmMotor);
-		final ColorDetector colorDetector = new ColorDetector(Game.leftMotor, Game.rightMotor, Game.elbowMotor, Game.foreArmMotor);
+		final RingRetrieval ringRetrieval = new RingRetrieval(Game.leftMotor, Game.rightMotor, Game.elbowMotor,
+				Game.foreArmMotor);
+		final ColorDetector colorDetector = new ColorDetector(Game.leftMotor, Game.rightMotor, Game.elbowMotor,
+				Game.foreArmMotor);
 		// final RingSearcher searcher = new RingSearcher(storageMotor, rodMotor);
 		// spawn a new Thread to avoid localization from blocking
 		(new Thread() {
 			public void run() {
-				
+				//perform ultrasonic localization
 				usLoc.localize(buttonChoice);
+				//perform light localization
 				lgLoc.localize(GameParameter.SC);
-			
-				//navigation.turnTo(270);
-				//navigation.travelTo(6,2);
-				
-				
+				//navigate to the tunnel entrance
 				navigation.goToTunnel(GameParameter.TNG_LL, GameParameter.TNG_RR, GameParameter.GreenCorner);
+				//go through the tunnel
 				navigation.goThroughTunnel(GameParameter.TNG_LL, GameParameter.TNG_RR);
+				//navigate to the ring set (two tiles away from the ring set)
 				navigation.goToRingSet(GameParameter.TG);
-			
-				navigation.ringDetection();
-				
-				Sound.beepSequence();	
-				
-				//navigation.ringDetection();
+				//
+				navigation.approachRingSetForColorDetection();
+				//perform color detection
 				colorDetector.scanUpperRing();
-				
-<<<<<<< HEAD
-				//Game.leftMotor.setSpeed(120);
-				//Game.rightMotor.setSpeed(120);
-=======
->>>>>>> 5b845a7412d0f0e6350078d48d5ea4885969fae7
-				navigation.moveOneTileWithCorrection();
-				navigation.ringDetection2(); //move 1.5cm
-				
+				//perform ring retrieval
+				navigation.approachRingSetForRingRetrieval(); // move 1.5cm
+				//grab the upper ring
 				ringRetrieval.grabUpperRing();
+				//grab the lower ring
 				ringRetrieval.grabLowerRing();
-				
+				//back off from the tree
 				navigation.backOffOneTileWithCorrection();
 
 			}

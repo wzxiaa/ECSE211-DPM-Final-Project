@@ -17,6 +17,16 @@ import lejos.hardware.sensor.EV3UltrasonicSensor;
 import lejos.hardware.sensor.SensorModes;
 import lejos.robotics.SampleProvider;
 
+/**
+ * This class is for the parameter values used for the robot
+ * 
+ * @author Ajay Patel
+ * @author Fandi Yi
+ * @author Lucas Bellido
+ * @author Tianzhu Fu
+ * @author Nicolas Abdelnour
+ * @author Wenzong Xia
+ */
 public enum Game {
 	INSTANCE;
 

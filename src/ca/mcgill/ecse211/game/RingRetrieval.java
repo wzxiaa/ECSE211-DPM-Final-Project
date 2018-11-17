@@ -4,6 +4,18 @@ import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.hardware.motor.EV3MediumRegulatedMotor;
 import lejos.hardware.motor.NXTRegulatedMotor;
 
+/**
+ * This class contains methods for the robot to perform ring retrieval by using the 
+ * elbowMotor and the foreArm motor. 
+ * 
+ * @author Ajay Patel
+ * @author Fandi Yi
+ * @author Lucas Bellido
+ * @author Tianzhu Fu
+ * @author Nicolas Abdelnour
+ * @author Wenzong Xia
+ *
+ */
 public class RingRetrieval {
 	
 	private EV3LargeRegulatedMotor leftMotor;
@@ -14,6 +26,14 @@ public class RingRetrieval {
 	private int foreArmSpeed = 150;
 	private int elbowMotorRotationSpeed = 20;
 	
+	/**
+	 * This RingRetrieval class constructor sets up the robot to perform ring retrieval
+	 * 
+	 * @param leftMotor
+	 * @param rightMotor
+	 * @param elbowMotor
+	 * @param foreArmMotor
+	 */
 	public RingRetrieval(EV3LargeRegulatedMotor leftMotor, EV3LargeRegulatedMotor rightMotor, NXTRegulatedMotor elbowMotor, EV3MediumRegulatedMotor foreArmMotor) {
 		this.leftMotor = leftMotor;
 		this.rightMotor = rightMotor;
@@ -21,20 +41,22 @@ public class RingRetrieval {
 		this.foreArmMotor = foreArmMotor;
 	}
 
-	
+	/**
+	 * This method makes the robot to grab the upper ring
+	 */
 	public void grabUpperRing() {
 		foreArmMotor.setSpeed(foreArmSpeed);
 		elbowMotor.setSpeed(50);
 		foreArmMotor.rotate(75);
-<<<<<<< HEAD
 		elbowMotor.rotate(-101);//105
-=======
 		elbowMotor.rotate(-105);//105
->>>>>>> 5b845a7412d0f0e6350078d48d5ea4885969fae7
 		foreArmMotor.rotate(-115);
 		foreArmMotor.rotate(40);
 	}
 	
+	/**
+	 * This method makes the robot to grab the lower ring
+	 */
 	public void grabLowerRing() {
 		foreArmMotor.setSpeed(250);
 		elbowMotor.setSpeed(50);
@@ -43,6 +65,7 @@ public class RingRetrieval {
 		
 		foreArmMotor.rotate(-100);
 		
+		// after the foreArm is attached to the lower ring, the robot moves back for 10cm to drag the ring off the rack
 		leftMotor.rotate(-convertDistance(Game.WHEEL_RAD, 10), true);
 		rightMotor.rotate(-convertDistance(Game.WHEEL_RAD,10), false);
 		

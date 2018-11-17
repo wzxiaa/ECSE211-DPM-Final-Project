@@ -5,6 +5,13 @@ import lejos.hardware.motor.EV3LargeRegulatedMotor;
 
 /**
  * This class implements the odometer for the robot
+ * 
+ * @author Ajay Patel
+ * @author Fandi Yi
+ * @author Lucas Bellido
+ * @author Tianzhu Fu
+ * @author Nicolas Abdelnour
+ * @author Wenzong Xia
  *
  */
 public class Odometer extends OdometerData implements Runnable {

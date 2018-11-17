@@ -16,7 +16,16 @@ import ca.mcgill.ecse211.odometer.*;
 import ca.mcgill.ecse211.threads.SensorData;
 
 /**
- * ColorDectection class
+ * This class implements the color detection functionality of the robot
+ * including the rotation of the elbowMotor and the foreArm moto
+ * 
+ * @author Ajay Patel
+ * @author Fandi Yi
+ * @author Lucas Bellido
+ * @author Tianzhu Fu
+ * @author Nicolas Abdelnour
+ * @author Wenzong Xia
+ * 
  */
 
 public class ColorDetector {

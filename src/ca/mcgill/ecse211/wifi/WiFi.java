@@ -32,8 +32,13 @@ import lejos.hardware.Button;
  * or WiFi. You can disable printing from the WiFi code via
  * ENABLE_DEBUG_WIFI_PRINT (below).
  * 
- * @author Michael Smith, Tharsan Ponnampalam
- *
+ * @author Ajay Patel
+ * @author Fandi Yi
+ * @author Lucas Bellido
+ * @author Tianzhu Fu
+ * @author Nicolas Abdelnour
+ * @author Wenzong Xia
+ * 
  */
 public class WiFi {
 
