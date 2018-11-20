@@ -65,13 +65,9 @@ public class test {
 		ColorDetector colorDetector = new ColorDetector(Game.leftMotor, Game.rightMotor, Game.elbowMotor,
 				Game.foreArmMotor);
 		navigation.approachRingSetForColorDetection();
-		for(int i = 0; i<10; i++) {
-			colorDetector.scanUpperRing();
-			try {
-				Thread.sleep(500);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+		colorDetector.ringScanTest();
+		while(true) {
+			colorDetector.detectColor();
 		}
 	}
 }

@@ -59,7 +59,6 @@ public class ColorDetector {
 	private double mOrangeR = 0.9547663589;
 	private double mOrangeG = 0.2766071505;
 	private double mOrangeB = 0.1091314998;
-
 	private double mEmptyR = 0.1345000000;
 	private double mEmptyB = 0.0855000000;
 	private double mEmptyG = 0.0122500000;
@@ -134,7 +133,7 @@ public class ColorDetector {
 			display.drawString("2: " + B, 0, 3);
 			// display.drawString("Co: " + currentBrightness, 0, 4);
 			getColor(R,G,B);
-
+			
 			// normalize
 			nR = R / (Math.sqrt(R * R + G * G + B * B));
 			nG = G / (Math.sqrt(R * R + G * G + B * B));
@@ -155,31 +154,31 @@ public class ColorDetector {
 			//print list[0] which is going to the detected color
 			if(list[0] == dBlue) {
 				display.drawString("Blue detected", 0, 5);
-				Sound.beep();
+				//Sound.beep();
 				break;
 			}
-
+			
 			if(list[0] == dGreen) {
 				display.drawString("Green detected", 0, 5);
-				Sound.beep();
-				Sound.beep();
+				//Sound.beep();
+				//Sound.beep();
 				break;
 			}
 
 			if(list[0] == dYellow) {
 				display.drawString("Yellow detected", 0, 5);
-				Sound.beep();
-				Sound.beep();
-				Sound.beep();
+				//Sound.beep();
+				//Sound.beep();
+				//Sound.beep();
 				break;
 			}
 
 			if(list[0] == dOrange) {
 				display.drawString("Orange detected", 0, 5);
-				Sound.beep();
-				Sound.beep();
-				Sound.beep();
-				Sound.beep();
+				//Sound.beep();
+				//Sound.beep();
+				//Sound.beep();
+				//Sound.beep();
 				break;
 			}
 			
@@ -203,12 +202,19 @@ public class ColorDetector {
 	public void scanUpperRing() {
 		foreArmMotor.setSpeed(70);
 		elbowMotor.setSpeed(50);
-		elbowMotor.rotate(-146);
-		foreArmMotor.rotate(-27);
+		elbowMotor.rotate(-142);
+		foreArmMotor.rotate(-25);
 		detectColor();
-		foreArmMotor.rotate(27);
-		elbowMotor.rotate(146);
+		foreArmMotor.rotate(25);
+		elbowMotor.rotate(142);
 		
+	}
+	
+	public void ringScanTest() {
+		foreArmMotor.setSpeed(70);
+		elbowMotor.setSpeed(50);
+		elbowMotor.rotate(-142);
+		foreArmMotor.rotate(-25);
 	}
 
 }
