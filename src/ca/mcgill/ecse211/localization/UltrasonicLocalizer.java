@@ -56,12 +56,8 @@ public class UltrasonicLocalizer {
 	 * 
 	 * @param buttonChoice The left or right button on the EV3 brick
 	 */
-	public void localize(int buttonChoice) {
-		if (buttonChoice == Button.ID_RIGHT) {
-			risingEdge();
-		} else {
-			fallingEdge();
-		}
+	public void localize() {
+		fallingEdge();
 	}
 
 	/**

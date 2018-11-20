@@ -430,6 +430,15 @@ public class Navigation {
 		}
 	}
 	
+	
+	/**
+	 * This is a wrapper method whihc navigates the robot to the ring set and perform ring detection and retrieval on each side of the 
+	 * ring set and the robot terminates at the initial position where it arrives at the ring set
+	 */
+	public void detectAndGrabRing() {
+		
+	}
+	
 	/**
 	 * 	This method moves the robot backward by a distance of its sensor to the center of the wheel
 	 */

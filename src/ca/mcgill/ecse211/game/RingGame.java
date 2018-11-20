@@ -111,15 +111,15 @@ public class RingGame {
 		 * 
 		 * 
 		 * } catch (Exception e) { System.err.println("Error: " + e.getMessage()); }
-		 * Button.waitForAnyPress();
 		 * 
 		 */
 
 		// Setting up the game
 		try {
 			preparation();
-			Button.waitForAnyPress();
-			runGame();
+			//runGame();
+			
+			runTest(test.testType.LocalizationTest);	// LocalizationTest, NavigationToTunnelTest, NavigationThroughTunnelTest, NaviagtionToRingSetTest, RingColorDetectionTest, RingRetrievalTest
 		} catch (OdometerExceptions e) {
 			e.printStackTrace();
 		}
@@ -191,7 +191,6 @@ public class RingGame {
 	 * @throws OdometerExceptions
 	 */
 	public static void runGame() throws OdometerExceptions {
-		final int buttonChoice = Button.waitForAnyPress(); // Record choice (left or right press)
 		// Start localizing
 		final Navigation navigation = new Navigation(Game.leftMotor, Game.rightMotor);
 		final UltrasonicLocalizer usLoc = new UltrasonicLocalizer(navigation, Game.leftMotor, Game.rightMotor);
@@ -205,7 +204,7 @@ public class RingGame {
 		(new Thread() {
 			public void run() {
 				//perform ultrasonic localization
-				usLoc.localize(buttonChoice);
+				usLoc.localize();
 				//perform light localization
 				lgLoc.localize(GameParameter.SC);
 				//navigate to the tunnel entrance
@@ -214,7 +213,7 @@ public class RingGame {
 				navigation.goThroughTunnel(GameParameter.TNG_LL, GameParameter.TNG_RR);
 				//navigate to the ring set (two tiles away from the ring set)
 				navigation.goToRingSet(GameParameter.TG);
-				//
+				//approach the ring set
 				navigation.approachRingSetForColorDetection();
 				//perform color detection
 				colorDetector.scanUpperRing();
@@ -226,8 +225,26 @@ public class RingGame {
 				ringRetrieval.grabLowerRing();
 				//back off from the tree
 				navigation.backOffOneTileWithCorrection();
-
 			}
 		}).start();
+	}
+	
+	/**
+	 * This method runs the component testing based on the type of test user selects
+	 * @param testType
+	 * @throws OdometerExceptions
+	 */
+	public static void runTest(test.testType testType) throws OdometerExceptions {
+		test tests = new test();
+		switch (testType) {
+		case LocalizationTest:
+			tests.localizationTest();
+		case NavigationToTunnelTest:
+			tests.NavigationToTunnelTest();
+		case RingRetrievalTest:
+			tests.RingRetrievalTest();
+		case RingColorDetectionTest:
+			tests.RingColorDetectionTest();
+		}
 	}
 }
