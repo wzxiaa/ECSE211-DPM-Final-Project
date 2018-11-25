@@ -49,7 +49,7 @@ public class RingRetrieval {
 		foreArmMotor.setSpeed(foreArmSpeed);
 		elbowMotor.setSpeed(elbowMotorRotationSpeed);
 		foreArmMotor.rotate(75);
-		elbowMotor.rotate(-103);//105
+		elbowMotor.rotate(-110);//105
 		foreArmMotor.rotate(-115);
 		foreArmMotor.rotate(40);	
 		//elbowMotor.rotate(-105);//105
@@ -68,7 +68,7 @@ public class RingRetrieval {
 		//leftMotor.rotate(-convertDistance(Game.WHEEL_RAD, 10), true);
 		//rightMotor.rotate(-convertDistance(Game.WHEEL_RAD,10), false);
 		foreArmMotor.rotate(100);
-		elbowMotor.rotate(137);
+		elbowMotor.rotate(149);
 		foreArmMotor.rotate(-75);
 	}	
 	

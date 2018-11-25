@@ -24,11 +24,11 @@ public class test {
 
 	/**
 	 * This is constructor for the test class
-	 * 
+	 * gggggggggbn
 	 * @param type the type of test
 	 */
 	public test() {
-
+		
 	}
 
 	public void localizationTest() throws OdometerExceptions {
@@ -190,7 +190,8 @@ public class test {
 		GameParameter.Green_UR[1] = 3;
 		GameParameter.TNG_LL[0] = 3;
 		GameParameter.TNG_LL[1] = 2;
-		GameParameter.TNG_RR[0] = 5;
+		GameParameter.
+	     TNG_RR[0] = 5;
 		GameParameter.TNG_RR[1] = 3;
 		GameParameter.IslandG_LL[0] = 0;
 		GameParameter.IslandG_LL[1] = 0;

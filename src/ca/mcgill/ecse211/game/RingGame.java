@@ -116,9 +116,9 @@ public class RingGame {
 
 		// Setting up the game
 		try {
-			preparation();
 			
 			test.loadTestCase1();
+			preparation();
 			//test.loadTestCase2();
 			//test.loadTestCase3();
 			//test.loadTestCase4();
@@ -126,10 +126,10 @@ public class RingGame {
 			//test.loadTestCase6();
 			//test.loadTestCase7();
 			//test.loadTestCase8();
-			
-			runGame();
-
-			// runTest(test.testType.LocalizationTest); // LocalizationTest,
+			                                                          
+			   runGame();
+			   
+			//runTest(test.testType.RingDrop); // LocalizationTest,
 			// NavigationToTunnelTest, NavigationThroughTunnelTest, NaviagtionToRingSetTest,
 			// RingColorDetectionTest, RingRetrievalTest
 		} catch (OdometerExceptions e) {
@@ -199,7 +199,7 @@ public class RingGame {
 
 	/**
 	 * This method is to set up various components of the robot and is called after
-	 * the gameis prepared
+	 * the games prepared
 	 * 
 	 * @throws OdometerExceptions
 	 */

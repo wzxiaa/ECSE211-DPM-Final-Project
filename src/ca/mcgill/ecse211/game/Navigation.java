@@ -26,9 +26,9 @@ import lejos.hardware.motor.EV3LargeRegulatedMotor;
  */
 public class Navigation {
 	private static final int TUNNEL_SPEED = 250;
-	private static final int FORWARD_SPEED = 120;
+	private static final int FORWARD_SPEED = 150;
 	private static final int ROTATE_SPEED = 80;
-	private static final int ACCELERATION = 300;
+	private static final int ACCELERATION = 2000;
 	private EV3LargeRegulatedMotor leftMotor;
 	private EV3LargeRegulatedMotor rightMotor;
 	private Odometer odometer;
@@ -153,9 +153,12 @@ public class Navigation {
 		// stucked at the edge
 		leftMotor.setSpeed(TUNNEL_SPEED);
 		rightMotor.setSpeed(TUNNEL_SPEED);
-		for (int i = 0; i < 2; i++) {
-			moveOneTileWithCorrection();
-		}
+		
+		double distanceToTravelInTunnel = (GameParameter.tunnelLength+1) * 30.48 + 15;
+		
+		leftMotor.rotate(convertDistance(Game.WHEEL_RAD, distanceToTravelInTunnel), true);
+		rightMotor.rotate(convertDistance(Game.WHEEL_RAD, distanceToTravelInTunnel), false);
+		
 		leftMotor.setSpeed(FORWARD_SPEED);
 		rightMotor.setSpeed(FORWARD_SPEED);
 		// move to the grid line in front of the tunnel after it travels through it
@@ -219,6 +222,7 @@ public class Navigation {
 				rightMotor.rotate(convertDistance(Game.WHEEL_RAD, 5.5), false);
 				leftMotor.rotate(-convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), true);
 				rightMotor.rotate(convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), false);
+				GameParameter.tunnelLength = GameParameter.TNG_RR[1] - GameParameter.TNG_LL[1];
 
 			} else if (GameParameter.determineTunnelHeading(ll, ur) == GameParameter.TunnelHeading.EAST) {
 				// case 1.2: starting corner at 0 and tunnel is facing east
@@ -236,6 +240,7 @@ public class Navigation {
 				rightMotor.rotate(convertDistance(Game.WHEEL_RAD, 5.5), false);
 				leftMotor.rotate(convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), true);
 				rightMotor.rotate(-convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), false);
+				GameParameter.tunnelLength = GameParameter.TNG_RR[0] - GameParameter.TNG_LL[0];
 			}
 
 		} else if (GameParameter.GreenCorner == 1) {
@@ -254,6 +259,8 @@ public class Navigation {
 				rightMotor.rotate(convertDistance(Game.WHEEL_RAD, 5.5), false);
 				leftMotor.rotate(convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), true);
 				rightMotor.rotate(-convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), false);
+				GameParameter.tunnelLength = GameParameter.TNG_RR[1] - GameParameter.TNG_LL[1];
+				
 			} else if (GameParameter.determineTunnelHeading(ll, ur) == GameParameter.TunnelHeading.WEST) {
 				// case 2.2: starting corner at 1 and tunnel is facing west
 				travelTo(ur[0] + 1, ur[1] - 1);
@@ -270,6 +277,7 @@ public class Navigation {
 				rightMotor.rotate(convertDistance(Game.WHEEL_RAD, 5.5), false);
 				leftMotor.rotate(-convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), true);
 				rightMotor.rotate(convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), false);
+				GameParameter.tunnelLength = GameParameter.TNG_RR[0] - GameParameter.TNG_LL[0];
 			}
 		} else if (GameParameter.GreenCorner == 2) {
 			// case 3: starting corner at 2
@@ -287,6 +295,7 @@ public class Navigation {
 				rightMotor.rotate(convertDistance(Game.WHEEL_RAD, 5.5), false);
 				leftMotor.rotate(-convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), true);
 				rightMotor.rotate(convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), false);
+				GameParameter.tunnelLength = GameParameter.TNG_RR[1] - GameParameter.TNG_LL[1];
 			} else if (GameParameter.determineTunnelHeading(ll, ur) == GameParameter.TunnelHeading.WEST) {
 				// case 3.2: starting corner at 2 and tunnel is facing west
 				travelTo(ur[0] + 1, ur[1]);
@@ -303,6 +312,7 @@ public class Navigation {
 				rightMotor.rotate(convertDistance(Game.WHEEL_RAD, 5.5), false);
 				leftMotor.rotate(convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), true);
 				rightMotor.rotate(-convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), false);
+				GameParameter.tunnelLength = GameParameter.TNG_RR[0] - GameParameter.TNG_LL[0];
 			}
 		} else if (GameParameter.GreenCorner == 3) {
 			// case 4: starting corner at 3
@@ -320,6 +330,7 @@ public class Navigation {
 				rightMotor.rotate(convertDistance(Game.WHEEL_RAD, 5.5), false);
 				leftMotor.rotate(convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), true);
 				rightMotor.rotate(-convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), false);
+				GameParameter.tunnelLength = GameParameter.TNG_RR[1] - GameParameter.TNG_LL[1];
 			} else if (GameParameter.determineTunnelHeading(ll, ur) == GameParameter.TunnelHeading.EAST) {
 				// case 4.2: starting corner at 3 and tunnel is facing east
 				travelTo(ll[0] - 1, ll[1] + 1);
@@ -336,6 +347,7 @@ public class Navigation {
 				rightMotor.rotate(convertDistance(Game.WHEEL_RAD, 5.5), false);
 				leftMotor.rotate(-convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), true);
 				rightMotor.rotate(convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), false);
+				GameParameter.tunnelLength = GameParameter.TNG_RR[0] - GameParameter.TNG_LL[0];
 			}
 		}
 	}
@@ -357,6 +369,8 @@ public class Navigation {
 		rightMotor.rotate(-convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), false);
 
 		selfLocalize();
+		odometer.setX(GameParameter.ptAfterTunnel[0]);;
+		odometer.setX(GameParameter.ptAfterTunnel[1]);;
 	}
 
 	/**
@@ -389,8 +403,6 @@ public class Navigation {
 		leftMotor.setSpeed(FORWARD_SPEED);
 		rightMotor.setSpeed(FORWARD_SPEED);
 		moveOneTileWithCorrection();
-		leftMotor.setSpeed(50);
-		rightMotor.setSpeed(50);
 		leftMotor.rotate(convertDistance(Game.WHEEL_RAD, 19.05), true);
 		rightMotor.rotate(convertDistance(Game.WHEEL_RAD, 19.05), false);
 	}
@@ -400,11 +412,9 @@ public class Navigation {
 	 * retrieve the ring
 	 */
 	public void approachRingSetForRingRetrieval() {
-		leftMotor.setSpeed(50);
-		rightMotor.setSpeed(50);
 		moveOneTileWithCorrection();
-		leftMotor.rotate(convertDistance(Game.WHEEL_RAD, 1), true);
-		rightMotor.rotate(convertDistance(Game.WHEEL_RAD, 1), false);
+		leftMotor.rotate(convertDistance(Game.WHEEL_RAD, 1.5), true);
+		rightMotor.rotate(convertDistance(Game.WHEEL_RAD, 1.5), false);
 	}
 
 	/**
@@ -415,7 +425,7 @@ public class Navigation {
 		double currentX = odometer.getXYT()[0];
 		double currentY = odometer.getXYT()[1];
 
-		if (Math.abs(currentX - TR[0]) < (0.2)) {
+		if (Math.abs(currentX - TR[0]) < (0.3)) {
 			if (currentY > TR[1]) {
 				travelTo(TR[0], TR[1] + 2);
 				turnTo(180);
@@ -423,10 +433,10 @@ public class Navigation {
 				travelTo(TR[0], TR[1] - 2);
 				turnTo(0);
 			}
-		} else if (currentX < TR[0] && Math.abs(currentX - TR[0]) > 0.8) {
+		} else if (currentX < TR[0] && Math.abs(currentX - TR[0]) > 0.7) {
 			travelTo(TR[0] - 2, TR[1]);
 			turnTo(90);
-		} else if (currentX > TR[0] && Math.abs(currentX - TR[0]) > 0.8) {
+		} else if (currentX > TR[0] && Math.abs(currentX - TR[0]) > 0.7) {
 			travelTo(TR[0] + 2, TR[1]);
 			turnTo(270);
 		}

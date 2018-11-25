@@ -86,6 +86,7 @@ public enum GameParameter {
 	
 	public static int[] ptAfterTunnel  = new int[2];	//point where the robot travels to after the tunnel
 	
+	public static int tunnelLength;
 
 	/**
 	 * This method generate the starting coordinates of the robot after its
@@ -145,7 +146,7 @@ public enum GameParameter {
 			} else {
 				return TunnelHeading.EAST;
 			}
-		}
+		}	
 		return null;
 	}
 
