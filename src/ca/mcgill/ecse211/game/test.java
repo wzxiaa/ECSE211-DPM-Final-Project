@@ -45,7 +45,7 @@ public class test {
 		UltrasonicLocalizer usLoc = new UltrasonicLocalizer(navigation, Game.leftMotor, Game.rightMotor);
 		usLoc.localize();
 		lgLoc.localize(GameParameter.SC);
-		navigation.goToTunnel(GameParameter.Green_LL, GameParameter.Green_UR, GameParameter.startingCorner);
+		navigation.goToTunnel(GameParameter.Green_LL, GameParameter.Green_UR);
 	}
 
 	public void RingRetrievalTest() throws OdometerExceptions {

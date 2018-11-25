@@ -24,7 +24,8 @@ public class RingRetrieval {
 	private EV3MediumRegulatedMotor foreArmMotor;
 	
 	private int foreArmSpeed = 150;
-	private int elbowMotorRotationSpeed = 20;
+	private int elbowMotorRotationSpeed = 50;
+	private int sidesOfTree = 4;	// this is the variable for how many sides of tree to check
 	
 	/**
 	 * This RingRetrieval class constructor sets up the robot to perform ring retrieval
@@ -46,12 +47,12 @@ public class RingRetrieval {
 	 */
 	public void grabUpperRing() {
 		foreArmMotor.setSpeed(foreArmSpeed);
-		elbowMotor.setSpeed(50);
+		elbowMotor.setSpeed(elbowMotorRotationSpeed);
 		foreArmMotor.rotate(75);
-		elbowMotor.rotate(-101);//105
-		elbowMotor.rotate(-105);//105
+		elbowMotor.rotate(-103);//105
 		foreArmMotor.rotate(-115);
-		foreArmMotor.rotate(40);
+		foreArmMotor.rotate(40);	
+		//elbowMotor.rotate(-105);//105
 	}
 	
 	/**
@@ -59,21 +60,61 @@ public class RingRetrieval {
 	 */
 	public void grabLowerRing() {
 		foreArmMotor.setSpeed(250);
-		elbowMotor.setSpeed(50);
+		elbowMotor.setSpeed(elbowMotorRotationSpeed);
 		foreArmMotor.rotate(75);
-		elbowMotor.rotate(-36);
-		
+		elbowMotor.rotate(-34);
 		foreArmMotor.rotate(-100);
-		
 		// after the foreArm is attached to the lower ring, the robot moves back for 10cm to drag the ring off the rack
-		leftMotor.rotate(-convertDistance(Game.WHEEL_RAD, 10), true);
-		rightMotor.rotate(-convertDistance(Game.WHEEL_RAD,10), false);
-		
+		//leftMotor.rotate(-convertDistance(Game.WHEEL_RAD, 10), true);
+		//rightMotor.rotate(-convertDistance(Game.WHEEL_RAD,10), false);
 		foreArmMotor.rotate(100);
-		
 		elbowMotor.rotate(137);
 		foreArmMotor.rotate(-75);
 	}	
+	
+	
+	/**
+	 * This method is the wrapper method to grab both the upper ring and lower ring
+	 */
+	public void grabUpperAndLowerRing() {
+		grabUpperRing();
+		grabLowerRing();
+		
+	}
+	
+	public void dropRings() {
+		elbowMotor.setSpeed(100);
+		foreArmMotor.setSpeed(80);
+		
+		// drop upper ring
+		elbowMotor.rotate(-45);
+		foreArmMotor.rotate(-20);
+		elbowMotor.rotate(-90);
+		
+		foreArmMotor.rotate(20);
+		elbowMotor.rotate(135);
+		
+		// drop Lower ring
+		//elbowMotor.rotate(10);
+		
+		elbowMotor.rotate(-130);
+		foreArmMotor.rotate(-70);
+		elbowMotor.rotate(-10);
+		foreArmMotor.rotate(180);
+		
+		foreArmMotor.rotate(-110);
+		elbowMotor.rotate(137);
+	}
+	
+	
+	
+	/**
+	 * This method enables the robot to grab for both the upper ring and lower ring for each side of the tree (4 sides)
+	 */
+	public void grabRingForEachSide(int numOfSides) {
+		
+		
+	}
 	
 	/**
 	 * This method allows the conversion of a distance to the total rotation of each

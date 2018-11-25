@@ -117,9 +117,11 @@ public class RingGame {
 		// Setting up the game
 		try {
 			preparation();
-			//runGame();
-			
-			runTest(test.testType.LocalizationTest);	// LocalizationTest, NavigationToTunnelTest, NavigationThroughTunnelTest, NaviagtionToRingSetTest, RingColorDetectionTest, RingRetrievalTest
+			runGame();
+
+			// runTest(test.testType.LocalizationTest); // LocalizationTest,
+			// NavigationToTunnelTest, NavigationThroughTunnelTest, NaviagtionToRingSetTest,
+			// RingColorDetectionTest, RingRetrievalTest
 		} catch (OdometerExceptions e) {
 			e.printStackTrace();
 		}
@@ -127,9 +129,9 @@ public class RingGame {
 	}
 
 	/**
-	 * This method sets up ports for the two light sensors at the back and the light sensor at the front for 
-	 * color detection. 
-	 * Ï
+	 * This method sets up ports for the two light sensors at the back and the light
+	 * sensor at the front for color detection. Ï
+	 * 
 	 * @throws OdometerExceptions
 	 */
 	public static void preparation() throws OdometerExceptions {
@@ -157,7 +159,7 @@ public class RingGame {
 		backLight[1] = lgSensors[1].getRedMode();
 		TextLCD lcd = LocalEV3.get().getTextLCD();
 		lcd.clear();
-		
+
 		Thread odoThread = new Thread(odometer);
 		odoThread.start();
 
@@ -171,7 +173,7 @@ public class RingGame {
 		Thread lightThread = new Thread(lightPoller);
 		lightThread.start();
 
-		//set uo the light sensor for color detection
+		// set uo the light sensor for color detection
 		Port rgbPort = LocalEV3.get().getPort("S1");
 		EV3ColorSensor rgbSensor = new EV3ColorSensor(rgbPort);
 		SampleProvider frontlight[] = new SampleProvider[1];
@@ -186,7 +188,8 @@ public class RingGame {
 	}
 
 	/**
-	 * This method is to set up various components of the robot and is called after the gameis prepared
+	 * This method is to set up various components of the robot and is called after
+	 * the gameis prepared
 	 * 
 	 * @throws OdometerExceptions
 	 */
@@ -203,34 +206,27 @@ public class RingGame {
 		// spawn a new Thread to avoid localization from blocking
 		(new Thread() {
 			public void run() {
-				//perform ultrasonic localization
-				usLoc.localize();
-				//perform light localization
-				lgLoc.localize(GameParameter.SC);
-				//navigate to the tunnel entrance
-				navigation.goToTunnel(GameParameter.TNG_LL, GameParameter.TNG_RR, GameParameter.GreenCorner);
-				//go through the tunnel
-				navigation.goThroughTunnel(GameParameter.TNG_LL, GameParameter.TNG_RR);
-				//navigate to the ring set (two tiles away from the ring set)
+
+				// perform ultrasonic localization
+				usLoc.localize(); // perform light localization
+				lgLoc.localize(GameParameter.SC); // navigate to the tunnel entrance
+				navigation.goToTunnel(GameParameter.TNG_LL, GameParameter.TNG_RR);
+				// go through the tunnel
+				navigation.goThroughTunnel(GameParameter.TNG_LL, GameParameter.TNG_RR); // navigate to the ring set (two
+																						// tiles away from the ring set)
 				navigation.goToRingSet(GameParameter.TG);
-				//approach the ring set
-				navigation.approachRingSetForColorDetection();
-				//perform color detection
-				colorDetector.scanUpperRing();
-				//perform ring retrieval
-				navigation.approachRingSetForRingRetrieval(); // move 1.5cm
-				//grab the upper ring
-				ringRetrieval.grabUpperRing();
-				//grab the lower ring
-				ringRetrieval.grabLowerRing();
-				//back off from the tree
-				navigation.backOffOneTileWithCorrection();
+
+				detectAndGrabRing(navigation, ringRetrieval, colorDetector);
+
+				ringRetrieval.dropRings();
+
 			}
 		}).start();
 	}
-	
+
 	/**
 	 * This method runs the component testing based on the type of test user selects
+	 * 
 	 * @param testType
 	 * @throws OdometerExceptions
 	 */
@@ -246,5 +242,36 @@ public class RingGame {
 		case RingColorDetectionTest:
 			tests.RingColorDetectionTest();
 		}
+	}
+
+	public static void detectAndGrabRing(Navigation nav, RingRetrieval rr, ColorDetector cd) {
+
+		nav.approachRingSetForColorDetection();
+
+		cd.scanUpperRing();
+
+		nav.approachRingSetForRingRetrieval();
+
+		rr.grabUpperAndLowerRing();
+
+		nav.backOffFromTree();
+
+		for (int i = 0; i < 3; i++) {
+
+			nav.moveToNextSideOfTree();
+
+			cd.scanUpperRing();
+
+			nav.approachRingSetForRingRetrieval();
+
+			rr.grabUpperAndLowerRing();
+
+			nav.backOffFromTree();
+			
+		}
+
+		nav.moveToNextSideOfTree();
+		nav.moveBackByOffset();
+
 	}
 }
