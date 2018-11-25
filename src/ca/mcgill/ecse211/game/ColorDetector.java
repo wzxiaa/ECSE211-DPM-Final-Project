@@ -202,12 +202,11 @@ public class ColorDetector {
 	public void scanUpperRing() {
 		foreArmMotor.setSpeed(70);
 		elbowMotor.setSpeed(50);
-		elbowMotor.rotate(-142);
+		elbowMotor.rotate(-145);
 		foreArmMotor.rotate(-25);
 		detectColor();
 		foreArmMotor.rotate(25);
-		elbowMotor.rotate(142);
-		
+		elbowMotor.rotate(145);
 	}
 	
 	public void ringScanTest() {

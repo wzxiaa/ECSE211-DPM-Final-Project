@@ -117,6 +117,16 @@ public class RingGame {
 		// Setting up the game
 		try {
 			preparation();
+			
+			test.loadTestCase1();
+			//test.loadTestCase2();
+			//test.loadTestCase3();
+			//test.loadTestCase4();
+			//test.loadTestCase5();
+			//test.loadTestCase6();
+			//test.loadTestCase7();
+			//test.loadTestCase8();
+			
 			runGame();
 
 			// runTest(test.testType.LocalizationTest); // LocalizationTest,
@@ -208,16 +218,19 @@ public class RingGame {
 			public void run() {
 
 				// perform ultrasonic localization
-				usLoc.localize(); // perform light localization
+				usLoc.localize(); 
+				// perform light localization
 				lgLoc.localize(GameParameter.SC); // navigate to the tunnel entrance
 				navigation.goToTunnel(GameParameter.TNG_LL, GameParameter.TNG_RR);
 				// go through the tunnel
-				navigation.goThroughTunnel(GameParameter.TNG_LL, GameParameter.TNG_RR); // navigate to the ring set (two
-																						// tiles away from the ring set)
+				navigation.goThroughTunnel(GameParameter.TNG_LL, GameParameter.TNG_RR); // navigate to the ring set (two tiles away from the ring set)
+				// go to the ring set
 				navigation.goToRingSet(GameParameter.TG);
-
+				// perform ring retrieval
 				detectAndGrabRing(navigation, ringRetrieval, colorDetector);
-
+				// navigate back to the starting point
+				navigation.moveBackToStartingPoint(GameParameter.TNG_LL, GameParameter.TNG_RR);
+				// drop the ring
 				ringRetrieval.dropRings();
 
 			}
@@ -255,7 +268,7 @@ public class RingGame {
 		rr.grabUpperAndLowerRing();
 
 		nav.backOffFromTree();
-
+		/*
 		for (int i = 0; i < 3; i++) {
 
 			nav.moveToNextSideOfTree();
@@ -269,6 +282,7 @@ public class RingGame {
 			nav.backOffFromTree();
 			
 		}
+		*/
 
 		nav.moveToNextSideOfTree();
 		nav.moveBackByOffset();

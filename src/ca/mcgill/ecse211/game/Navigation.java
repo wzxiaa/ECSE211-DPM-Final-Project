@@ -488,12 +488,15 @@ public class Navigation {
 		rightMotor.rotate(-convertDistance(Game.WHEEL_RAD, 11.43), false);
 	}
 	
-	public void checkWhetherRingSetInPath() {
-		
-	}
 	
-	
+	/**
+	 * This method navigates the robot back to the starting position
+	 * 
+	 * @param ll
+	 * @param ur
+	 */
 	public void moveBackToStartingPoint(int[] ll, int[] ur) {
+		// travel to the point where the robot perform self localization after it first goes through the tunnel
 		travelTo(GameParameter.ptAfterTunnel[0], GameParameter.ptAfterTunnel[1]);
 		
 		if (GameParameter.GreenCorner == 0) {
@@ -533,14 +536,21 @@ public class Navigation {
 				turnTo(0);
 			}
 		}
+		// going through the tunnel
 		goingBackThroughTunnel();
+		// turn right
 		leftMotor.rotate(convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), true);
 		rightMotor.rotate(-convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), false);
+		// move forward to the point
 		moveOneTileWithCorrection();
+		moveBackByOffset();
+		// travel to the starting point
 		travelTo(GameParameter.SC[0], GameParameter.SC[1]);
 	}
 	
-	
+	/**
+	 * This method makes the robot to move through the tunnel
+	 */
 	public void goingBackThroughTunnel() {
 		moveOneTileWithCorrection();
 		leftMotor.rotate(convertDistance(Game.WHEEL_RAD, 5.5), true);

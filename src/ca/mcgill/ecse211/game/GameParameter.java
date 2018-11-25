@@ -29,7 +29,7 @@ public enum GameParameter {
 
 	public static int RedCorner = -1;
 
-	public static int GreenCorner = 1;
+	public static int GreenCorner = -1;
 
 	public static int[] Red_LL = new int[2];
 
@@ -39,27 +39,27 @@ public enum GameParameter {
 
 	public static int[] TNR_RR = new int[2];
 
-	public static int[] Green_LL = { 2, 0 };
+	public static int[] Green_LL = new int[2];
 
-	public static int[] Green_UR = { 8, 3 };
+	public static int[] Green_UR = new int[2];
 
-	public static int[] IslandG_LL = { 0, 5 };
+	public static int[] IslandG_LL = new int[2];
 
-	public static int[] IslandG_UR = { 6, 8 };
+	public static int[] IslandG_UR = new int[2];
 	
-	public static int[] IslandR_LL = { 0, 5 };
+	public static int[] IslandR_LL = new int[2];
 
-	public static int[] IslandR_UR = { 6, 8 };
+	public static int[] IslandR_UR = new int[2];
 
-	public static int[] TNG_LL = { 4, 3 };
+	public static int[] TNG_LL = new int[2];
 
-	public static int[] TNG_RR = { 5, 5 };
+	public static int[] TNG_RR = new int[2];
 
 	public static int[] SC = new int[3];
 
 	public static int[] TR = new int[2];
 
-	public static int[] TG = { 7, 7 };
+	public static int[] TG = new int[2];
 
 	public static double startingHeading;
 	
@@ -85,7 +85,6 @@ public enum GameParameter {
 	public static int[] ptBeforeTunnel = new int[2];	//point where the robot travels to before the tunnel
 	
 	public static int[] ptAfterTunnel  = new int[2];	//point where the robot travels to after the tunnel
-	
 	
 
 	/**
