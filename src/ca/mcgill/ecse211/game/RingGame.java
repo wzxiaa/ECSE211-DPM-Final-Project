@@ -254,11 +254,21 @@ public class RingGame {
 			tests.RingRetrievalTest();
 		case RingColorDetectionTest:
 			tests.RingColorDetectionTest();
+		case RingDrop: 
+			tests.RingDrop();
 		}
 	}
 
+	/**
+	 * This method performs ring detection and ring retrieval for each side of the ring set.
+	 * 
+	 * @param nav
+	 * @param rr
+	 * @param cd
+	 */
 	public static void detectAndGrabRing(Navigation nav, RingRetrieval rr, ColorDetector cd) {
 
+		// check for the side where the robot approaches the ring set
 		nav.approachRingSetForColorDetection();
 
 		cd.scanUpperRing();

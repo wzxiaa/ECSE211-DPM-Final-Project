@@ -19,7 +19,7 @@ public class test {
 
 	public enum testType {
 		LocalizationTest, NavigationToTunnelTest, NavigationThroughTunnelTest, NaviagtionToRingSetTest,
-		RingColorDetectionTest, RingRetrievalTest;
+		RingColorDetectionTest, RingRetrievalTest, RingDrop;
 	}
 
 	/**
@@ -70,6 +70,15 @@ public class test {
 			colorDetector.detectColor();
 		}
 	}
+	
+	public void RingDrop() throws OdometerExceptions {
+		RingRetrieval ringRetrieval = new RingRetrieval(Game.leftMotor, Game.rightMotor, Game.elbowMotor, 
+				Game.foreArmMotor);
+		for(int i=0; i<15; i++) {
+			ringRetrieval.dropRings();
+		}
+	}
+	
 	
 	/**
 	 * starting corner 0
