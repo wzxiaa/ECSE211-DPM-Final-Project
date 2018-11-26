@@ -154,38 +154,38 @@ public class ColorDetector {
 			//print list[0] which is going to the detected color
 			if(list[0] == dBlue) {
 				display.drawString("Blue detected", 0, 5);
-				//Sound.beep();
+				Sound.beep();
 				break;
 			}
 			
 			if(list[0] == dGreen) {
 				display.drawString("Green detected", 0, 5);
-				//Sound.beep();
-				//Sound.beep();
+				Sound.beep();
+				Sound.beep();
 				break;
 			}
 
 			if(list[0] == dYellow) {
 				display.drawString("Yellow detected", 0, 5);
-				//Sound.beep();
-				//Sound.beep();
-				//Sound.beep();
+				Sound.beep();
+				Sound.beep();
+				Sound.beep();
 				break;
 			}
 
 			if(list[0] == dOrange) {
 				display.drawString("Orange detected", 0, 5);
-				//Sound.beep();
-				//Sound.beep();
-				//Sound.beep();
-				//Sound.beep();
+				Sound.beep();
+				Sound.beep();
+				Sound.beep();
+				Sound.beep();
 				break;
 			}
 			
 			if (list[0] == dEmpty) {
 				display.drawString("Empty", 0, 5);
-				//Sound.buzz();
-				//rotateSensor();
+				Sound.buzz();
+				rotateSensor();
 				break;
 			}
 			
@@ -207,6 +207,8 @@ public class ColorDetector {
 		detectColor();
 		foreArmMotor.rotate(25);
 		elbowMotor.rotate(145);
+		foreArmMotor.stop();
+		elbowMotor.stop();
 	}
 	
 	public void ringScanTest() {

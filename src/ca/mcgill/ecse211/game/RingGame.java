@@ -66,70 +66,80 @@ public class RingGame {
 
 	public static void main(String[] args) {
 		/*
-		 * WifiConnection conn = new WifiConnection(SERVER_IP, TEAM_NUMBER,
-		 * ENABLE_DEBUG_WIFI_PRINT); try { Map data = conn.getData();
-		 * 
-		 * int greenTeam = ((Long) data.get("GreenTeam")).intValue();
-		 * GameParameter.GreenTeam = greenTeam;
-		 * 
-		 * int greenCorner = ((Long) data.get("GreenCorner")).intValue();
-		 * GameParameter.GreenCorner = greenCorner;
-		 * 
-		 * int greenLowerLeftX = ((Long) data.get("Green_LL_x")).intValue();
-		 * GameParameter.Green_LL[0] = greenLowerLeftX; int greenLowerLeftY = ((Long)
-		 * data.get("Green_LL_y")).intValue(); GameParameter.Green_LL[1] =
-		 * greenLowerLeftY;
-		 * 
-		 * int greenUpperRightX = ((Long) data.get("Green_UR_x")).intValue();
-		 * GameParameter.Green_UR[0] = greenUpperRightX; int greenUpperRightY = ((Long)
-		 * data.get("Green_UR_y")).intValue(); GameParameter.Green_UR[1] =
-		 * greenUpperRightY;
-		 * 
-		 * int islandLowerLeftX = ((Long) data.get("Island_LL_x")).intValue();
-		 * GameParameter.Island_LL[0] = islandLowerLeftX; int islandLowerLeftY = ((Long)
-		 * data.get("Island_LL_y")).intValue(); GameParameter.Island_LL[1] =
-		 * islandLowerLeftY;
-		 * 
-		 * int islandUpperRightX = ((Long) data.get("Island_UR_x")).intValue();
-		 * GameParameter.Island_UR[0] = islandUpperRightX; int islandUpperRightY =
-		 * ((Long) data.get("Island_UR_y")).intValue(); GameParameter.Island_UR[1] =
-		 * islandUpperRightY;
-		 * 
-		 * int upperRightCornerGreenTunnelX = ((Long) data.get("TNG_UR_x")).intValue();
-		 * GameParameter.TNG_RR[0] = upperRightCornerGreenTunnelX; int
-		 * upperRightCornerGreenTunnelY = ((Long) data.get("TNG_UR_y")).intValue();
-		 * GameParameter.TNG_RR[1] = upperRightCornerGreenTunnelY;
-		 * 
-		 * int lowerLeftCornerGreenTunnelX = ((Long) data.get("TNG_LL_x")).intValue();
-		 * GameParameter.TNG_LL[0] = lowerLeftCornerGreenTunnelX; int
-		 * lowerLeftCornerGreenTunnelY = ((Long) data.get("TNG_LL_y")).intValue();
-		 * GameParameter.TNG_LL[1] = lowerLeftCornerGreenTunnelY;
-		 * 
-		 * int greenRingSetX = ((Long) data.get("TG_x")).intValue(); GameParameter.TG[0]
-		 * = greenRingSetX; int greenRingSetY = ((Long) data.get("TG_y")).intValue();
-		 * GameParameter.TG[1] = greenRingSetY;
-		 * 
-		 * 
-		 * } catch (Exception e) { System.err.println("Error: " + e.getMessage()); }
-		 * 
-		 */
+		WifiConnection conn = new WifiConnection(SERVER_IP, TEAM_NUMBER, ENABLE_DEBUG_WIFI_PRINT);
+		try {
+			Map data = conn.getData();
 
+			int greenTeam = ((Long) data.get("GreenTeam")).intValue();
+
+			int redTeam = ((Long) data.get("GreenTeam")).intValue();
+
+			if (greenTeam != -1) {
+				
+			} else if (redTeam != -1) {
+				
+			}
+
+			int greenCorner = ((Long) data.get("GreenCorner")).intValue();
+			GameParameter.GreenCorner = greenCorner;
+
+			int greenLowerLeftX = ((Long) data.get("Green_LL_x")).intValue();
+			GameParameter.Green_LL[0] = greenLowerLeftX;
+			int greenLowerLeftY = ((Long) data.get("Green_LL_y")).intValue();
+			GameParameter.Green_LL[1] = greenLowerLeftY;
+
+			int greenUpperRightX = ((Long) data.get("Green_UR_x")).intValue();
+			GameParameter.Green_UR[0] = greenUpperRightX;
+			int greenUpperRightY = ((Long) data.get("Green_UR_y")).intValue();
+			GameParameter.Green_UR[1] = greenUpperRightY;
+
+			int islandLowerLeftX = ((Long) data.get("Island_LL_x")).intValue();
+			GameParameter.Island_LL[0] = islandLowerLeftX;
+			int islandLowerLeftY = ((Long) data.get("Island_LL_y")).intValue();
+			GameParameter.Island_LL[1] = islandLowerLeftY;
+
+			int islandUpperRightX = ((Long) data.get("Island_UR_x")).intValue();
+			GameParameter.Island_UR[0] = islandUpperRightX;
+			int islandUpperRightY = ((Long) data.get("Island_UR_y")).intValue();
+			GameParameter.Island_UR[1] = islandUpperRightY;
+
+			int upperRightCornerGreenTunnelX = ((Long) data.get("TNG_UR_x")).intValue();
+			GameParameter.TNG_RR[0] = upperRightCornerGreenTunnelX;
+			int upperRightCornerGreenTunnelY = ((Long) data.get("TNG_UR_y")).intValue();
+			GameParameter.TNG_RR[1] = upperRightCornerGreenTunnelY;
+
+			int lowerLeftCornerGreenTunnelX = ((Long) data.get("TNG_LL_x")).intValue();
+			GameParameter.TNG_LL[0] = lowerLeftCornerGreenTunnelX;
+			int lowerLeftCornerGreenTunnelY = ((Long) data.get("TNG_LL_y")).intValue();
+			GameParameter.TNG_LL[1] = lowerLeftCornerGreenTunnelY;
+
+			int greenRingSetX = ((Long) data.get("TG_x")).intValue();
+			GameParameter.TG[0] = greenRingSetX;
+			int greenRingSetY = ((Long) data.get("TG_y")).intValue();
+			GameParameter.TG[1] = greenRingSetY;
+
+		} catch (Exception e) {
+			System.err.println("Error: " + e.getMessage());
+		}
+*/
 		// Setting up the game
 		try {
-			
-			test.loadTestCase1();
+
+			test.loadTestCase3();
+
 			preparation();
-			//test.loadTestCase2();
-			//test.loadTestCase3();
-			//test.loadTestCase4();
-			//test.loadTestCase5();
-			//test.loadTestCase6();
-			//test.loadTestCase7();
-			//test.loadTestCase8();
-			                                                          
-			   runGame();
-			   
-			//runTest(test.testType.RingDrop); // LocalizationTest,
+
+			// test.loadTestCase2();
+			// test.loadTestCase3();
+			// test.loadTestCase4();
+			// test.loadTestCase5();
+			// test.loadTestCase6();
+			// test.loadTestCase7();
+			// test.loadTestCase8();
+
+			runGame();
+			//
+			// runTest(test.testType.RingRetrievalTest); // LocalizationTest,
 			// NavigationToTunnelTest, NavigationThroughTunnelTest, NaviagtionToRingSetTest,
 			// RingColorDetectionTest, RingRetrievalTest
 		} catch (OdometerExceptions e) {
@@ -173,9 +183,6 @@ public class RingGame {
 		Thread odoThread = new Thread(odometer);
 		odoThread.start();
 
-		// Thread odoDisplay = new Thread(display);
-		// odoDisplay.start();
-		// Start ultrasonic and light sensors
 		usPoller = new UltrasonicPoller(usDistance, usData, sensorData);
 		Thread usThread = new Thread(usPoller);
 		usThread.start();
@@ -218,12 +225,13 @@ public class RingGame {
 			public void run() {
 
 				// perform ultrasonic localization
-				usLoc.localize(); 
+				usLoc.localize();
 				// perform light localization
 				lgLoc.localize(GameParameter.SC); // navigate to the tunnel entrance
 				navigation.goToTunnel(GameParameter.TNG_LL, GameParameter.TNG_RR);
 				// go through the tunnel
-				navigation.goThroughTunnel(GameParameter.TNG_LL, GameParameter.TNG_RR); // navigate to the ring set (two tiles away from the ring set)
+				navigation.goThroughTunnel(GameParameter.TNG_LL, GameParameter.TNG_RR); // navigate to the ring set (two
+																						// tiles away from the ring set)
 				// go to the ring set
 				navigation.goToRingSet(GameParameter.TG);
 				// perform ring retrieval
@@ -254,13 +262,14 @@ public class RingGame {
 			tests.RingRetrievalTest();
 		case RingColorDetectionTest:
 			tests.RingColorDetectionTest();
-		case RingDrop: 
+		case RingDrop:
 			tests.RingDrop();
 		}
 	}
 
 	/**
-	 * This method performs ring detection and ring retrieval for each side of the ring set.
+	 * This method performs ring detection and ring retrieval for each side of the
+	 * ring set.
 	 * 
 	 * @param nav
 	 * @param rr
@@ -278,8 +287,10 @@ public class RingGame {
 		rr.grabUpperAndLowerRing();
 
 		nav.backOffFromTree();
-		/*
-		for (int i = 0; i < 3; i++) {
+
+		/////////////////////////////
+
+		for (int i = 0; i < 2; i++) {
 
 			nav.moveToNextSideOfTree();
 
@@ -290,12 +301,10 @@ public class RingGame {
 			rr.grabUpperAndLowerRing();
 
 			nav.backOffFromTree();
-			
-		}
-		*/
 
-		nav.moveToNextSideOfTree();
-		nav.moveBackByOffset();
+		}
+
+		nav.exitRingSearch();
 
 	}
 }

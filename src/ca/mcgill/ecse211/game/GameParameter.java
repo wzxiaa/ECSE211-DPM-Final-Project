@@ -25,7 +25,7 @@ public enum GameParameter {
 	
 	public static int RedTeam = -1;
 
-	public static int GreenTeam = 14;
+	public static int GreenTeam = -1;
 
 	public static int RedCorner = -1;
 
@@ -65,6 +65,8 @@ public enum GameParameter {
 	
 	// Parameters used by the methods after checking the team number
 	public static int startingCorner = -1;
+	
+	public static int teamNumber;
 	
 	public static int[] startingRegion_LL = new int[2];
 	

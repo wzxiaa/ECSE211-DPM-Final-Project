@@ -26,14 +26,14 @@ import lejos.hardware.motor.EV3LargeRegulatedMotor;
  */
 public class Navigation {
 	private static final int TUNNEL_SPEED = 250;
-	private static final int FORWARD_SPEED = 150;
-	private static final int ROTATE_SPEED = 80;
-	private static final int ACCELERATION = 2000;
+	private static final int FORWARD_SPEED = 200;
+	//private static final int FORWARD_SPEED = 200;
+	private static final int ACCELERATION = 3000;
 	private EV3LargeRegulatedMotor leftMotor;
 	private EV3LargeRegulatedMotor rightMotor;
 	private Odometer odometer;
 	private SensorData data;
-	
+
 	/**
 	 * This navigation class constructor sets up our robot to begin navigating a
 	 * particular map
@@ -101,6 +101,9 @@ public class Navigation {
 	 * @param theta: theta to be corrected each time
 	 */
 	public synchronized void moveWithCorrection(double distance, double theta) {
+		
+		motorReset(leftMotor,rightMotor);	// reset motors to prevent motor crash
+		
 		leftMotor.setSpeed(FORWARD_SPEED);
 		rightMotor.setSpeed(FORWARD_SPEED);
 
@@ -151,17 +154,26 @@ public class Navigation {
 		moveOneTileWithCorrection();
 		// increase the speed of the robot to prevent the ball bearing from getting
 		// stucked at the edge
+		
+		motorReset(leftMotor,rightMotor);	// reset motors to prevent motor crash
+		
 		leftMotor.setSpeed(TUNNEL_SPEED);
 		rightMotor.setSpeed(TUNNEL_SPEED);
-		
-		double distanceToTravelInTunnel = (GameParameter.tunnelLength+1) * 30.48 + 15;
-		
+
+		double distanceToTravelInTunnel = (GameParameter.tunnelLength + 1) * 30.48 + 15;
+
 		leftMotor.rotate(convertDistance(Game.WHEEL_RAD, distanceToTravelInTunnel), true);
 		rightMotor.rotate(convertDistance(Game.WHEEL_RAD, distanceToTravelInTunnel), false);
+
+		motorReset(leftMotor,rightMotor);	// reset motors to prevent motor crash
 		
 		leftMotor.setSpeed(FORWARD_SPEED);
 		rightMotor.setSpeed(FORWARD_SPEED);
 		// move to the grid line in front of the tunnel after it travels through it
+		moveOneTileWithCorrection();
+		moveBackByOffset();
+		leftMotor.rotate(convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), true);
+		rightMotor.rotate(-convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), false);
 		moveOneTileWithCorrection();
 	}
 
@@ -182,15 +194,17 @@ public class Navigation {
 
 		// TURN RIGHT
 		if (dTheta > 180) {
-			leftMotor.setSpeed(ROTATE_SPEED);
-			rightMotor.setSpeed(ROTATE_SPEED);
+			motorReset(leftMotor,rightMotor);	// reset motors to prevent motor crash
+			leftMotor.setSpeed(FORWARD_SPEED);
+			rightMotor.setSpeed(FORWARD_SPEED);
 			leftMotor.rotate(-convertAngle(Game.WHEEL_RAD, Game.TRACK, 360 - dTheta), true);
 			rightMotor.rotate(convertAngle(Game.WHEEL_RAD, Game.TRACK, 360 - dTheta), false);
 		}
 		// TURN LEFT
 		else {
-			leftMotor.setSpeed(ROTATE_SPEED);
-			rightMotor.setSpeed(ROTATE_SPEED);
+			motorReset(leftMotor,rightMotor);	// reset motors to prevent motor crash
+			leftMotor.setSpeed(FORWARD_SPEED);
+			rightMotor.setSpeed(FORWARD_SPEED);
 			leftMotor.rotate(convertAngle(Game.WHEEL_RAD, Game.TRACK, dTheta), true);
 			rightMotor.rotate(-convertAngle(Game.WHEEL_RAD, Game.TRACK, dTheta), false);
 		}
@@ -212,14 +226,14 @@ public class Navigation {
 				// case 1.1: starting corner at 0 and tunnel is facing north
 				travelTo(ll[0], ll[1] - 1);
 				GameParameter.ptBeforeTunnel[0] = ll[0];
-				GameParameter.ptBeforeTunnel[1] = ll[1]-1;
-				GameParameter.ptAfterTunnel[0] = ll[0];
-				GameParameter.ptAfterTunnel[1] = ll[1]-1;
+				GameParameter.ptBeforeTunnel[1] = ll[1] - 1;
+				GameParameter.ptAfterTunnel[0] = ur[0];
+				GameParameter.ptAfterTunnel[1] = ur[1] + 1;
 				turnTo(90);
 				moveOneTileWithCorrection();
 				// move to the center of the tile
-				leftMotor.rotate(convertDistance(Game.WHEEL_RAD, 5.5), true);
-				rightMotor.rotate(convertDistance(Game.WHEEL_RAD, 5.5), false);
+				leftMotor.rotate(convertDistance(Game.WHEEL_RAD, 5), true);
+				rightMotor.rotate(convertDistance(Game.WHEEL_RAD, 5), false);
 				leftMotor.rotate(-convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), true);
 				rightMotor.rotate(convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), false);
 				GameParameter.tunnelLength = GameParameter.TNG_RR[1] - GameParameter.TNG_LL[1];
@@ -229,15 +243,15 @@ public class Navigation {
 				travelTo(ll[0] - 1, ll[1]);
 				GameParameter.ptBeforeTunnel[0] = ll[0] - 1;
 				GameParameter.ptBeforeTunnel[1] = ll[1];
-				GameParameter.ptAfterTunnel[0] = ur[0]+1;
-				GameParameter.ptAfterTunnel[1] = ur[1]-1;
+				GameParameter.ptAfterTunnel[0] = ur[0] + 1;
+				GameParameter.ptAfterTunnel[1] = ur[1] - 1;
 				turnTo(90);
 				leftMotor.rotate(-convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), true);
 				rightMotor.rotate(convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), false);
 				moveOneTileWithCorrection();
 				// move to the center of the tile
-				leftMotor.rotate(convertDistance(Game.WHEEL_RAD, 5.5), true);
-				rightMotor.rotate(convertDistance(Game.WHEEL_RAD, 5.5), false);
+				leftMotor.rotate(convertDistance(Game.WHEEL_RAD, 5), true);
+				rightMotor.rotate(convertDistance(Game.WHEEL_RAD, 5), false);
 				leftMotor.rotate(convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), true);
 				rightMotor.rotate(-convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), false);
 				GameParameter.tunnelLength = GameParameter.TNG_RR[0] - GameParameter.TNG_LL[0];
@@ -249,32 +263,32 @@ public class Navigation {
 				// case 2.1: starting corner at 1 and tunnel is facing north
 				travelTo(ur[0], ll[1] - 1);
 				GameParameter.ptBeforeTunnel[0] = ur[0];
-				GameParameter.ptBeforeTunnel[1] = ll[1]-1;
+				GameParameter.ptBeforeTunnel[1] = ll[1] - 1;
 				GameParameter.ptAfterTunnel[0] = ur[0];
-				GameParameter.ptAfterTunnel[1] = ur[1]+1;
+				GameParameter.ptAfterTunnel[1] = ur[1] + 1;
 				turnTo(270);
 				moveOneTileWithCorrection();
 				// move to the center of the tile
-				leftMotor.rotate(convertDistance(Game.WHEEL_RAD, 5.5), true);
-				rightMotor.rotate(convertDistance(Game.WHEEL_RAD, 5.5), false);
+				leftMotor.rotate(convertDistance(Game.WHEEL_RAD, 5), true);
+				rightMotor.rotate(convertDistance(Game.WHEEL_RAD, 5), false);
 				leftMotor.rotate(convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), true);
 				rightMotor.rotate(-convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), false);
 				GameParameter.tunnelLength = GameParameter.TNG_RR[1] - GameParameter.TNG_LL[1];
-				
+
 			} else if (GameParameter.determineTunnelHeading(ll, ur) == GameParameter.TunnelHeading.WEST) {
 				// case 2.2: starting corner at 1 and tunnel is facing west
 				travelTo(ur[0] + 1, ur[1] - 1);
-				GameParameter.ptBeforeTunnel[0] = ur[0] +1;
-				GameParameter.ptBeforeTunnel[1] = ur[1]-1;
-				GameParameter.ptAfterTunnel[0] = ll[0]-1;
-				GameParameter.ptAfterTunnel[1] = ll[1]+1;
+				GameParameter.ptBeforeTunnel[0] = ur[0] + 1;
+				GameParameter.ptBeforeTunnel[1] = ur[1] - 1;
+				GameParameter.ptAfterTunnel[0] = ll[0] - 1;
+				GameParameter.ptAfterTunnel[1] = ll[1] + 1;
 				turnTo(270);
 				leftMotor.rotate(convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), true);
 				rightMotor.rotate(-convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), false);
 				moveOneTileWithCorrection();
 				// move to the center of the tile
-				leftMotor.rotate(convertDistance(Game.WHEEL_RAD, 5.5), true);
-				rightMotor.rotate(convertDistance(Game.WHEEL_RAD, 5.5), false);
+				leftMotor.rotate(convertDistance(Game.WHEEL_RAD, 5), true);
+				rightMotor.rotate(convertDistance(Game.WHEEL_RAD, 5), false);
 				leftMotor.rotate(-convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), true);
 				rightMotor.rotate(convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), false);
 				GameParameter.tunnelLength = GameParameter.TNG_RR[0] - GameParameter.TNG_LL[0];
@@ -285,31 +299,31 @@ public class Navigation {
 				// case 3.1: starting corner at 2 and tunnel is facing south
 				travelTo(ur[0], ur[1] + 1);
 				GameParameter.ptBeforeTunnel[0] = ur[0];
-				GameParameter.ptBeforeTunnel[1] = ur[1]+1;
+				GameParameter.ptBeforeTunnel[1] = ur[1] + 1;
 				GameParameter.ptAfterTunnel[0] = ll[0];
-				GameParameter.ptAfterTunnel[1] = ll[1]-1;
+				GameParameter.ptAfterTunnel[1] = ll[1] - 1;
 				turnTo(270);
 				moveOneTileWithCorrection();
 				// move to the center of the tile
-				leftMotor.rotate(convertDistance(Game.WHEEL_RAD, 5.5), true);
-				rightMotor.rotate(convertDistance(Game.WHEEL_RAD, 5.5), false);
+				leftMotor.rotate(convertDistance(Game.WHEEL_RAD, 5), true);
+				rightMotor.rotate(convertDistance(Game.WHEEL_RAD, 5), false);
 				leftMotor.rotate(-convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), true);
 				rightMotor.rotate(convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), false);
 				GameParameter.tunnelLength = GameParameter.TNG_RR[1] - GameParameter.TNG_LL[1];
 			} else if (GameParameter.determineTunnelHeading(ll, ur) == GameParameter.TunnelHeading.WEST) {
 				// case 3.2: starting corner at 2 and tunnel is facing west
 				travelTo(ur[0] + 1, ur[1]);
-				GameParameter.ptBeforeTunnel[0] = ur[0]+1;
+				GameParameter.ptBeforeTunnel[0] = ur[0] + 1;
 				GameParameter.ptBeforeTunnel[1] = ur[1];
-				GameParameter.ptAfterTunnel[0] = ll[0]-1;
+				GameParameter.ptAfterTunnel[0] = ll[0] - 1;
 				GameParameter.ptAfterTunnel[1] = ll[1];
 				turnTo(270);
 				leftMotor.rotate(-convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), true);
 				rightMotor.rotate(convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), false);
 				moveOneTileWithCorrection();
 				// move to the center of the tile
-				leftMotor.rotate(convertDistance(Game.WHEEL_RAD, 5.5), true);
-				rightMotor.rotate(convertDistance(Game.WHEEL_RAD, 5.5), false);
+				leftMotor.rotate(convertDistance(Game.WHEEL_RAD, 5), true);
+				rightMotor.rotate(convertDistance(Game.WHEEL_RAD, 5), false);
 				leftMotor.rotate(convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), true);
 				rightMotor.rotate(-convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), false);
 				GameParameter.tunnelLength = GameParameter.TNG_RR[0] - GameParameter.TNG_LL[0];
@@ -319,32 +333,32 @@ public class Navigation {
 			if (GameParameter.determineTunnelHeading(ll, ur) == GameParameter.TunnelHeading.SOUTH) {
 				// case 4.1: starting corner at 3 and tunnel is facing south
 				travelTo(ur[0] - 1, ur[1] + 1);
-				GameParameter.ptBeforeTunnel[0] = ur[0] -1;
-				GameParameter.ptBeforeTunnel[1] = ur[1]+1;
+				GameParameter.ptBeforeTunnel[0] = ur[0] - 1;
+				GameParameter.ptBeforeTunnel[1] = ur[1] + 1;
 				GameParameter.ptAfterTunnel[0] = ll[0];
-				GameParameter.ptAfterTunnel[1] = ll[1]-1;
+				GameParameter.ptAfterTunnel[1] = ll[1] - 1;
 				turnTo(90);
 				moveOneTileWithCorrection();
 				// move to the center of the tile
-				leftMotor.rotate(convertDistance(Game.WHEEL_RAD, 5.5), true);
-				rightMotor.rotate(convertDistance(Game.WHEEL_RAD, 5.5), false);
+				leftMotor.rotate(convertDistance(Game.WHEEL_RAD, 5), true);
+				rightMotor.rotate(convertDistance(Game.WHEEL_RAD, 5), false);
 				leftMotor.rotate(convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), true);
 				rightMotor.rotate(-convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), false);
 				GameParameter.tunnelLength = GameParameter.TNG_RR[1] - GameParameter.TNG_LL[1];
 			} else if (GameParameter.determineTunnelHeading(ll, ur) == GameParameter.TunnelHeading.EAST) {
 				// case 4.2: starting corner at 3 and tunnel is facing east
 				travelTo(ll[0] - 1, ll[1] + 1);
-				GameParameter.ptBeforeTunnel[0] = ll[0]-1;
-				GameParameter.ptBeforeTunnel[1] = ll[1]+1;
-				GameParameter.ptAfterTunnel[0] = ur[0]+1;
-				GameParameter.ptAfterTunnel[1] = ll[1]-1;
+				GameParameter.ptBeforeTunnel[0] = ll[0] - 1;
+				GameParameter.ptBeforeTunnel[1] = ll[1] + 1;
+				GameParameter.ptAfterTunnel[0] = ur[0] + 1;
+				GameParameter.ptAfterTunnel[1] = ll[1] - 1;
 				turnTo(90);
 				leftMotor.rotate(convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), true);
 				rightMotor.rotate(-convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), false);
 				moveOneTileWithCorrection();
 				// move to the center of the tile
-				leftMotor.rotate(convertDistance(Game.WHEEL_RAD, 5.5), true);
-				rightMotor.rotate(convertDistance(Game.WHEEL_RAD, 5.5), false);
+				leftMotor.rotate(convertDistance(Game.WHEEL_RAD, 5), true);
+				rightMotor.rotate(convertDistance(Game.WHEEL_RAD, 5), false);
 				leftMotor.rotate(-convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), true);
 				rightMotor.rotate(convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), false);
 				GameParameter.tunnelLength = GameParameter.TNG_RR[0] - GameParameter.TNG_LL[0];
@@ -357,7 +371,7 @@ public class Navigation {
 	 * method)
 	 */
 	public void goThroughTunnel(int[] ll, int[] ur) {
-
+		
 		moveWithCorrectionInTunnel();
 
 		leftMotor.setSpeed(FORWARD_SPEED);
@@ -369,8 +383,8 @@ public class Navigation {
 		rightMotor.rotate(-convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), false);
 
 		selfLocalize();
-		odometer.setX(GameParameter.ptAfterTunnel[0]);;
-		odometer.setX(GameParameter.ptAfterTunnel[1]);;
+		odometer.setX(GameParameter.ptAfterTunnel[0]);
+		odometer.setY(GameParameter.ptAfterTunnel[1]);
 	}
 
 	/**
@@ -413,8 +427,8 @@ public class Navigation {
 	 */
 	public void approachRingSetForRingRetrieval() {
 		moveOneTileWithCorrection();
-		leftMotor.rotate(convertDistance(Game.WHEEL_RAD, 1.5), true);
-		rightMotor.rotate(convertDistance(Game.WHEEL_RAD, 1.5), false);
+		leftMotor.rotate(convertDistance(Game.WHEEL_RAD, 1), true);
+		rightMotor.rotate(convertDistance(Game.WHEEL_RAD, 1), false);
 	}
 
 	/**
@@ -425,7 +439,7 @@ public class Navigation {
 		double currentX = odometer.getXYT()[0];
 		double currentY = odometer.getXYT()[1];
 
-		if (Math.abs(currentX - TR[0]) < (0.3)) {
+		if (Math.abs(currentX - TR[0]) < (0.2)) {
 			if (currentY > TR[1]) {
 				travelTo(TR[0], TR[1] + 2);
 				turnTo(180);
@@ -473,32 +487,55 @@ public class Navigation {
 	 * robot terminates at the initial position where it arrives at the ring set
 	 */
 	public void backOffFromTree() {
-		backOffOneTileWithCorrection();
+		//backOffOneTileWithCorrection();
+		leftMotor.rotate(-convertDistance(Game.WHEEL_RAD, 6), true);
+		rightMotor.rotate(-convertDistance(Game.WHEEL_RAD, 6), false);
+		
+		moveOneTileWithCorrection();
 		moveBackByOffset();
 	}
-	
+
 	/**
-	 * This method moves the robot to the next side of the tree in anti-clockwise directionå
+	 * This method moves the robot to the next side of the tree in anti-clockwise
+	 * directionå
 	 */
 	public void moveToNextSideOfTree() {
+		leftMotor.rotate(-convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), true);
+		rightMotor.rotate(convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), false);
+		moveOneTileWithCorrection();
+		moveOneTileWithCorrection();
+		moveBackByOffset();
 		leftMotor.rotate(convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), true);
 		rightMotor.rotate(-convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), false);
 		moveOneTileWithCorrection();
 		moveOneTileWithCorrection();
 		moveBackByOffset();
-		leftMotor.rotate(-convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), true);
-		rightMotor.rotate(convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), false);
-		moveOneTileWithCorrection();
-		moveOneTileWithCorrection();
-		moveBackByOffset();
-		leftMotor.rotate(-convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), true);
-		rightMotor.rotate(convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), false);
+		leftMotor.rotate(convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), true);
+		rightMotor.rotate(-convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), false);
 		moveOneTileWithCorrection();
 		leftMotor.rotate(-convertDistance(Game.WHEEL_RAD, 11.43), true);
 		rightMotor.rotate(-convertDistance(Game.WHEEL_RAD, 11.43), false);
 	}
 	
-	
+	public void exitRingSearch() {
+		leftMotor.rotate(-convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), true);
+		rightMotor.rotate(convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), false);
+		moveOneTileWithCorrection();
+		moveOneTileWithCorrection();
+		moveBackByOffset();
+		leftMotor.rotate(convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), true);
+		rightMotor.rotate(-convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), false);
+		moveOneTileWithCorrection();
+		moveOneTileWithCorrection();
+		moveOneTileWithCorrection();
+		moveBackByOffset();
+		leftMotor.rotate(convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), true);
+		rightMotor.rotate(-convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), false);
+		moveOneTileWithCorrection();
+		moveOneTileWithCorrection();
+		moveBackByOffset();
+	}
+
 	/**
 	 * This method navigates the robot back to the starting position
 	 * 
@@ -506,9 +543,10 @@ public class Navigation {
 	 * @param ur
 	 */
 	public void moveBackToStartingPoint(int[] ll, int[] ur) {
-		// travel to the point where the robot perform self localization after it first goes through the tunnel
+		// travel to the point where the robot perform self localization after it first
+		// goes through the tunnel
 		travelTo(GameParameter.ptAfterTunnel[0], GameParameter.ptAfterTunnel[1]);
-		
+
 		if (GameParameter.GreenCorner == 0) {
 			// case 1: starting corner at 0
 			if (GameParameter.determineTunnelHeading(ll, ur) == GameParameter.TunnelHeading.NORTH) {
@@ -555,22 +593,24 @@ public class Navigation {
 		moveOneTileWithCorrection();
 		moveBackByOffset();
 		// travel to the starting point
+		motorReset(leftMotor,rightMotor);	// reset motors to prevent motor crash
 		travelTo(GameParameter.SC[0], GameParameter.SC[1]);
 	}
-	
+
 	/**
 	 * This method makes the robot to move through the tunnel
 	 */
 	public void goingBackThroughTunnel() {
+		motorReset(leftMotor,rightMotor);	// reset motors to prevent motor crash
 		moveOneTileWithCorrection();
-		leftMotor.rotate(convertDistance(Game.WHEEL_RAD, 5.5), true);
-		rightMotor.rotate(convertDistance(Game.WHEEL_RAD, 5.5), false);
+		leftMotor.rotate(convertDistance(Game.WHEEL_RAD, 5), true);
+		rightMotor.rotate(convertDistance(Game.WHEEL_RAD, 5), false);
 		leftMotor.rotate(-convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), true);
 		rightMotor.rotate(convertAngle(Game.WHEEL_RAD, Game.TRACK, 90), false);
 		moveWithCorrectionInTunnel();
 	}
 	
-	
+
 	/**
 	 * This method moves the robot backward by a distance of its sensor to the
 	 * center of the wheel
@@ -612,6 +652,19 @@ public class Navigation {
 	 */
 	private static int convertAngle(double radius, double width, double angle) {
 		return convertDistance(radius, Math.PI * width * angle / 360.0);
+	}
+
+	public static void motorReset(EV3LargeRegulatedMotor leftMotor, EV3LargeRegulatedMotor rightMotor) {
+		    // reset the motors
+		    for (EV3LargeRegulatedMotor motor : new EV3LargeRegulatedMotor[] {leftMotor, rightMotor}) {
+		      motor.stop();
+		      motor.setAcceleration(ACCELERATION);
+		    }
+		    try {
+		    	Thread.sleep(100);
+		    } catch (Exception e){
+	
+		    }
 	}
 
 }

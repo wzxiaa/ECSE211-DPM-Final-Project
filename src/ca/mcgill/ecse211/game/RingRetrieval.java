@@ -48,9 +48,9 @@ public class RingRetrieval {
 	public void grabUpperRing() {
 		foreArmMotor.setSpeed(foreArmSpeed);
 		elbowMotor.setSpeed(elbowMotorRotationSpeed);
-		foreArmMotor.rotate(75);
-		elbowMotor.rotate(-110);//105
-		foreArmMotor.rotate(-115);
+		foreArmMotor.rotate(30);
+		elbowMotor.rotate(-113);//105
+		foreArmMotor.rotate(-70);
 		foreArmMotor.rotate(40);	
 		//elbowMotor.rotate(-105);//105
 	}
@@ -59,17 +59,19 @@ public class RingRetrieval {
 	 * This method makes the robot to grab the lower ring
 	 */
 	public void grabLowerRing() {
+		leftMotor.rotate(-convertDistance(Game.WHEEL_RAD, 2), true);
+		rightMotor.rotate(-convertDistance(Game.WHEEL_RAD, 2), false);
 		foreArmMotor.setSpeed(250);
 		elbowMotor.setSpeed(elbowMotorRotationSpeed);
-		foreArmMotor.rotate(75);
+		foreArmMotor.rotate(30);
 		elbowMotor.rotate(-34);
-		foreArmMotor.rotate(-100);
+		foreArmMotor.rotate(-55);
 		// after the foreArm is attached to the lower ring, the robot moves back for 10cm to drag the ring off the rack
 		//leftMotor.rotate(-convertDistance(Game.WHEEL_RAD, 10), true);
 		//rightMotor.rotate(-convertDistance(Game.WHEEL_RAD,10), false);
-		foreArmMotor.rotate(100);
-		elbowMotor.rotate(149);
-		foreArmMotor.rotate(-75);
+		foreArmMotor.rotate(45);
+		elbowMotor.rotate(147);
+		foreArmMotor.rotate(-20);
 	}	
 	
 	
@@ -79,6 +81,8 @@ public class RingRetrieval {
 	public void grabUpperAndLowerRing() {
 		grabUpperRing();
 		grabLowerRing();
+		elbowMotor.stop();
+		foreArmMotor.stop();
 		
 	}
 	

@@ -103,6 +103,7 @@ public class test {
 	 */
 	
 	public static void loadTestCase1() {
+		GameParameter.GreenTeam = 14;
 		GameParameter.GreenCorner = 0;
 		GameParameter.Green_LL[0] = 0;
 		GameParameter.Green_LL[1] = 0;
@@ -143,6 +144,7 @@ public class test {
 	 */
 	
 	public static void loadTestCase2() {
+		GameParameter.GreenTeam = 14;
 		GameParameter.GreenCorner = 0;
 		GameParameter.Green_LL[0] = 0;
 		GameParameter.Green_LL[1] = 0;
@@ -183,6 +185,7 @@ public class test {
 	 */
 	
 	public static void loadTestCase3() {
+		GameParameter.GreenTeam = 14;
 		GameParameter.GreenCorner = 1;
 		GameParameter.Green_LL[0] = 5;
 		GameParameter.Green_LL[1] = 0;
@@ -224,6 +227,7 @@ public class test {
 	 */
 	
 	public static void loadTestCase4() {
+		GameParameter.GreenTeam = 14;
 		GameParameter.GreenCorner = 1;
 		GameParameter.Green_LL[0] = 4;
 		GameParameter.Green_LL[1] = 0;
@@ -264,6 +268,7 @@ public class test {
 	 */
 	
 	public static void loadTestCase5() {
+		GameParameter.GreenTeam = 14;
 		GameParameter.GreenCorner = 2;
 		GameParameter.Green_LL[0] = 3;
 		GameParameter.Green_LL[1] = 5;
@@ -304,6 +309,7 @@ public class test {
 	 */
 	
 	public static void loadTestCase6() {
+		GameParameter.GreenTeam = 14;
 		GameParameter.GreenCorner = 2;
 		GameParameter.Green_LL[0] = 5;
 		GameParameter.Green_LL[1] = 4;
@@ -345,6 +351,7 @@ public class test {
 	 */
 	
 	public static void loadTestCase7() {
+		GameParameter.GreenTeam = 14;
 		GameParameter.GreenCorner = 3;
 		GameParameter.Green_LL[0] = 0;
 		GameParameter.Green_LL[1] = 4;
@@ -385,6 +392,7 @@ public class test {
 	 */
 	
 	public static void loadTestCase8() {
+		GameParameter.GreenTeam = 14;
 		GameParameter.GreenCorner = 3;
 		GameParameter.Green_LL[0] = 0;
 		GameParameter.Green_LL[1] = 5;
