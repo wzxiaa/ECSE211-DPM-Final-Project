@@ -52,10 +52,18 @@ public class test {
 		Navigation navigation = new Navigation(Game.leftMotor, Game.rightMotor);
 		RingRetrieval ringRetrieval = new RingRetrieval(Game.leftMotor, Game.rightMotor, Game.elbowMotor,
 				Game.foreArmMotor);
-		navigation.approachRingSetForColorDetection();
+		//navigation.approachRingSetForColorDetection();
+		//navigation.approachRingSetForRingRetrieval(); // move 1.5cm
+		navigation.motorReset(navigation.leftMotor, navigation.rightMotor);
+		
+		navigation.leftMotor.setSpeed(200);
+		navigation.rightMotor.setSpeed(200);
+		while(true) {
 		navigation.approachRingSetForRingRetrieval(); // move 1.5cm
-		ringRetrieval.grabUpperRing();
-		ringRetrieval.grabLowerRing();
+		ringRetrieval.grabUpperAndLowerRing();
+		navigation.leftMotor.rotate(-convertDistance(Game.WHEEL_RAD, 1), true);
+		navigation.rightMotor.rotate(-convertDistance(Game.WHEEL_RAD, 1), false);
+		}
 	}
 	
 	public void RingColorDetectionTest() throws OdometerExceptions {
@@ -92,6 +100,7 @@ public class test {
 	 * 		 | (3,5)                 *
 	  
 	 * 	     |	 |	                 *
+	 * 
 	       
 	 *     (2,3) |	                 *
 	        
@@ -193,8 +202,7 @@ public class test {
 		GameParameter.Green_UR[1] = 3;
 		GameParameter.TNG_LL[0] = 3;
 		GameParameter.TNG_LL[1] = 2;
-		GameParameter.
-	     TNG_RR[0] = 5;
+		GameParameter.TNG_RR[0] = 5;
 		GameParameter.TNG_RR[1] = 3;
 		GameParameter.IslandG_LL[0] = 0;
 		GameParameter.IslandG_LL[1] = 0;
@@ -408,6 +416,32 @@ public class test {
 		GameParameter.IslandG_UR[1] = 3;
 		GameParameter.TG[0] = 2;
 		GameParameter.TG[1] = 1;
+	}
+	
+	
+	
+	/**
+	 * This method allows the conversion of a distance to the total rotation of each
+	 * wheel need to cover that distance.
+	 * 
+	 * @param radius   The radius of our wheels
+	 * @param distance The distance traveled
+	 * @return A converted distance
+	 */
+	public static int convertDistance(double radius, double distance) {
+		return (int) ((180.0 * distance) / (Math.PI * radius));
+	}
+
+	/**
+	 * This method allows the conversion of an angle value
+	 * 
+	 * @param radius   The radius of our wheels
+	 * @param distance The distance traveled
+	 * @param angle    The angle to convert
+	 * @return A converted angle
+	 */
+	private static int convertAngle(double radius, double width, double angle) {
+		return convertDistance(radius, Math.PI * width * angle / 360.0);
 	}
 	
 	

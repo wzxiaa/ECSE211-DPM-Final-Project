@@ -131,19 +131,19 @@ public enum GameParameter {
 				return TunnelHeading.EAST;
 			}
 		} else if (GreenCorner == 1) {
-			if (TN_UR[1] > Green_UR[1]) {
-				return TunnelHeading.NORTH;
-			} else {
+			if (TN_LL[0] == Green_UR[0]) {
 				return TunnelHeading.WEST;
+			} else {
+				return TunnelHeading.NORTH;
 			}
 		} else if (GreenCorner == 2) {
-			if (TNG_LL[1] < Green_LL[1]) {
+			if (TN_LL[1] == Green_UR[1]) {
 				return TunnelHeading.SOUTH;
 			} else {
 				return TunnelHeading.WEST;
 			}
 		} else if (GreenCorner == 3) {
-			if (TNG_LL[1] < Green_LL[1]) {
+			if (TN_LL[1] == Green_UR[1]) {
 				return TunnelHeading.SOUTH;
 			} else {
 				return TunnelHeading.EAST;

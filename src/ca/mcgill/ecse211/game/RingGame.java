@@ -125,8 +125,8 @@ public class RingGame {
 		// Setting up the game
 		try {
 
-			test.loadTestCase3();
-
+			test.loadTestCase4();
+			
 			preparation();
 
 			// test.loadTestCase2();
@@ -136,10 +136,10 @@ public class RingGame {
 			// test.loadTestCase6();
 			// test.loadTestCase7();
 			// test.loadTestCase8();
-
+			Button.waitForAnyPress();
 			runGame();
-			//
-			// runTest(test.testType.RingRetrievalTest); // LocalizationTest,
+		
+			//runTest(test.testType.RingRetrievalTest); // LocalizationTest,
 			// NavigationToTunnelTest, NavigationThroughTunnelTest, NaviagtionToRingSetTest,
 			// RingColorDetectionTest, RingRetrievalTest
 		} catch (OdometerExceptions e) {
@@ -199,9 +199,7 @@ public class RingGame {
 		Thread rgbThread = new Thread(rgbPoller);
 		rgbThread.start();
 
-		// setting up the coordinates for the starting corner
-		GameParameter.generateStartingCorner();
-
+		
 	}
 
 	/**
@@ -211,6 +209,8 @@ public class RingGame {
 	 * @throws OdometerExceptions
 	 */
 	public static void runGame() throws OdometerExceptions {
+		// setting up the coordinates for the starting corner
+		GameParameter.generateStartingCorner();
 		// Start localizing
 		final Navigation navigation = new Navigation(Game.leftMotor, Game.rightMotor);
 		final UltrasonicLocalizer usLoc = new UltrasonicLocalizer(navigation, Game.leftMotor, Game.rightMotor);
@@ -223,7 +223,7 @@ public class RingGame {
 		// spawn a new Thread to avoid localization from blocking
 		(new Thread() {
 			public void run() {
-
+				
 				// perform ultrasonic localization
 				usLoc.localize();
 				// perform light localization
@@ -231,19 +231,22 @@ public class RingGame {
 				navigation.goToTunnel(GameParameter.TNG_LL, GameParameter.TNG_RR);
 				// go through the tunnel
 				navigation.goThroughTunnel(GameParameter.TNG_LL, GameParameter.TNG_RR); // navigate to the ring set (two
-																						// tiles away from the ring set)
+				// tiles away from the ring set)
 				// go to the ring set
 				navigation.goToRingSet(GameParameter.TG);
 				// perform ring retrieval
 				detectAndGrabRing(navigation, ringRetrieval, colorDetector);
 				// navigate back to the starting point
 				navigation.moveBackToStartingPoint(GameParameter.TNG_LL, GameParameter.TNG_RR);
+				
+				ringRetrieval.unprotectRing();
 				// drop the ring
 				ringRetrieval.dropRings();
-
+		
 			}
 		}).start();
 	}
+	
 
 	/**
 	 * This method runs the component testing based on the type of test user selects
@@ -278,7 +281,11 @@ public class RingGame {
 	public static void detectAndGrabRing(Navigation nav, RingRetrieval rr, ColorDetector cd) {
 
 		// check for the side where the robot approaches the ring set
-		nav.approachRingSetForColorDetection();
+		//nav.approachRingSetForColorDetection();
+		
+		Sound.beep();
+		Sound.beep();
+		Sound.beep();
 
 		cd.scanUpperRing();
 
@@ -289,21 +296,29 @@ public class RingGame {
 		nav.backOffFromTree();
 
 		/////////////////////////////
+		
+		nav.moveToNextSideOfTree();
 
-		for (int i = 0; i < 2; i++) {
+		cd.scanUpperRing();
 
-			nav.moveToNextSideOfTree();
+		nav.approachRingSetForRingRetrieval();
 
-			cd.scanUpperRing();
+		rr.grabUpperAndLowerRing();
 
-			nav.approachRingSetForRingRetrieval();
+		nav.backOffFromTree();
+		
+		////////////////////////////
+		
+		nav.moveToNextSideOfTree();
+		
+		cd.scanUpperRing();
 
-			rr.grabUpperAndLowerRing();
+		nav.approachRingSetForRingRetrieval();
 
-			nav.backOffFromTree();
-
-		}
-
+		rr.grabLastRing();
+		
+		nav.backOffFromTree();
+		
 		nav.exitRingSearch();
 
 	}
